@@ -1,433 +1,191 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="scroll-smooth">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>IRREVERSIBLE: The Lasting Effects of War</title>
-  
+  <script src="https://cdn.tailwindcss.com"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;900&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;900&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
   
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            void: '#06080d',
+            asphalt: '#0d1118',
+            concrete: '#151b26',
+            ukrblue: '#0057B7',
+            ukryellow: '#FFD700',
+            scar: '#e63946',
+            kintsugi: '#d4af37',
+            chalk: '#eaebee',
+            ash: '#868e96'
+          },
+          fontFamily: {
+            serif: ['Cinzel', 'serif'],
+            sans: ['Inter', 'sans-serif'],
+            mono: ['"JetBrains Mono"', 'monospace']
+          }
+        }
+      }
+    }
+  </script>
+
   <style>
-    :root {
-      --bg-base: #06080d;
-      --bg-panel: #0b0e17;
-      --bg-panel-subtle: #121724;
-      --border-subtle: #242c3d;
-      --border-accent: #3a455c;
-      
-      --ukraine-blue: #0057B7;
-      --ukraine-yellow: #FFD700;
-      
-      --war-crimson: #a31824;
-      --war-crimson-bright: #e63946;
-      --war-amber: #e07a5f;
-      
-      --text-primary: #f0f3f8;
-      --text-secondary: #9aa5b8;
-      --text-muted: #5e6b82;
-      
-      --font-display: 'Cinzel', serif;
-      --font-body: 'Inter', sans-serif;
-      --font-mono: 'JetBrains Mono', monospace;
+    ::-webkit-scrollbar { width: 5px; }
+    ::-webkit-scrollbar-track { background: #06080d; }
+    ::-webkit-scrollbar-thumb { background: #1c2333; border-radius: 2px; }
+    ::-webkit-scrollbar-thumb:hover { background: #e63946; }
+
+    .blueprint-grid {
+      background-size: 40px 40px;
+      background-image: 
+        linear-gradient(to right, rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
     }
 
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
+    #warAtmosphereOverlay {
+      transition: background 0.4s ease-out, opacity 0.5s ease-out;
     }
 
-    body {
-      background-color: var(--bg-base);
-      color: var(--text-primary);
-      font-family: var(--font-body);
-      overflow-x: hidden;
-      line-height: 1.6;
-      -webkit-font-smoothing: antialiased;
+    .flag-split {
+      background: linear-gradient(135deg, #0057B7 0%, #0057B7 48%, #e63946 50%, #FFD700 52%, #FFD700 100%);
     }
 
-    /* Interactive Background Canvas (Cracks) */
-    #crack-canvas {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 100vh;
-      pointer-events: none;
-      z-index: 10;
+    .ukraine-glow {
+      text-shadow: 0 0 25px rgba(0, 87, 183, 0.6), 0 0 45px rgba(255, 215, 0, 0.35);
     }
+  </style>
+</head>
+<body class="bg-void text-chalk font-sans antialiased selection:bg-scar selection:text-white relative overflow-x-hidden blueprint-grid">
 
-    /* Dynamic Atmospheric Overlay */
-    #war-atmosphere {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 100vh;
-      pointer-events: none;
-      z-index: 5;
-      opacity: 0.15;
-      transition: opacity 0.5s ease;
-      background: radial-gradient(circle at 50% 50%, rgba(163, 24, 36, 0.4) 0%, rgba(0, 0, 0, 0.9) 100%);
-    }
+  <!-- Scroll-Driven Ambient Atmosphere Layer -->
+  <div id="warAtmosphereOverlay" class="fixed inset-0 pointer-events-none z-0 opacity-100" style="background: radial-gradient(circle at 50% 15%, rgba(0, 87, 183, 0.16) 0%, rgba(255, 215, 0, 0.08) 35%, rgba(6, 8, 13, 0.95) 80%);"></div>
 
-    /* Top HUD / Navigation */
-    header {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 60px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0 2rem;
-      background: rgba(6, 8, 13, 0.85);
-      backdrop-filter: blur(12px);
-      border-bottom: 1px solid var(--border-subtle);
-      z-index: 100;
-    }
+  <!-- Interactive Background Canvas (Fracture Cracks) -->
+  <canvas id="crackCanvas" class="fixed inset-0 pointer-events-none z-0 opacity-40 transition-opacity duration-1000"></canvas>
 
-    .brand-dossier {
-      display: flex;
-      align-items: center;
-      gap: 0.8rem;
-    }
+  <!-- Sticky Global Header -->
+  <header class="fixed top-0 left-0 w-full z-50 backdrop-blur-md bg-void/90 border-b border-white/10 px-5 md:px-8 py-3.5 flex justify-between items-center transition-all">
+    <div class="flex items-center space-x-3">
+      <div class="flex items-center space-x-1.5 px-2.5 py-1 rounded bg-black/60 border border-white/15">
+        <span class="inline-block w-2 h-2 rounded-full bg-ukrblue"></span>
+        <span class="inline-block w-2 h-2 rounded-full bg-ukryellow"></span>
+        <span class="inline-block w-1.5 h-1.5 rounded-full bg-scar animate-ping ml-1"></span>
+        <span class="font-mono text-[11px] font-bold tracking-wider text-chalk ml-1 uppercase">UKRAINE DOSSIER · FEB 24, 2022 – PRESENT</span>
+      </div>
+    </div>
 
-    .flag-strip {
-      display: flex;
-      flex-direction: column;
-      width: 14px;
-      height: 14px;
-      border: 1px solid rgba(255, 255, 255, 0.2);
-    }
+    <nav class="hidden lg:flex items-center space-x-6 text-xs font-mono text-ash">
+      <a href="#act-01" class="hover:text-ukryellow transition-colors">01. COLLAPSE</a>
+      <span class="opacity-20">/</span>
+      <a href="#act-02" class="hover:text-amber-400 transition-colors">02. DISPLACEMENT</a>
+      <span class="opacity-20">/</span>
+      <a href="#act-03" class="hover:text-scar transition-colors">03. INVISIBLE WOUNDS</a>
+      <span class="opacity-20">/</span>
+      <a href="#act-04" class="hover:text-kintsugi transition-colors">04. LIMITS OF REPAIR</a>
+    </nav>
 
-    .flag-strip span:first-child { background: var(--ukraine-blue); height: 50%; }
-    .flag-strip span:last-child { background: var(--ukraine-yellow); height: 50%; }
+    <!-- Audio Atmosphere Controller (Realistic Distant Artillery Rumble) -->
+    <div class="flex items-center space-x-3">
+      <button id="audioToggle" class="flex items-center space-x-2 text-xs font-mono px-3 py-1.5 rounded border border-white/20 hover:border-scar hover:text-scar transition-all bg-asphalt">
+        <span id="audioIcon">🔇</span>
+        <span id="audioText">SOUNDSCAPE: OFF</span>
+      </button>
+    </div>
+  </header>
 
-    .brand-text {
-      font-family: var(--font-mono);
-      font-size: 0.75rem;
-      letter-spacing: 0.1em;
-      color: var(--text-secondary);
-    }
+  <!-- Hero Section -->
+  <section class="min-h-screen flex flex-col justify-center items-center text-center px-6 relative z-10 pt-20">
+    <div class="inline-flex items-center gap-2 px-4 py-1.5 mb-6 rounded-full border border-ukryellow/30 bg-black/50 backdrop-blur text-ukryellow font-mono text-xs tracking-widest uppercase shadow-lg shadow-ukrblue/20">
+      <span class="w-2 h-2 rounded-full bg-ukrblue"></span>
+      <span>FORENSIC INVESTIGATION: RUSSIAN INVASION OF UKRAINE</span>
+      <span class="text-scar font-bold">● ACTIVE WARTIME TOLL</span>
+    </div>
 
-    nav {
-      display: flex;
-      gap: 1.5rem;
-      align-items: center;
-    }
+    <!-- Shattered Ukraine Flag Emblem -->
+    <div class="w-48 h-1.5 flag-split rounded-full mb-6 relative overflow-hidden shadow-md shadow-scar/30">
+      <div class="absolute inset-0 bg-void/20 animate-pulse"></div>
+    </div>
+    
+    <h1 class="text-5xl md:text-8xl font-serif font-black tracking-tight mb-3 ukraine-glow">
+      IRREVERSIBLE
+    </h1>
+    <h2 class="text-xl md:text-3xl font-serif text-slate-300 font-light tracking-widest max-w-4xl mb-4 uppercase">
+      The Lasting Effects of War
+    </h2>
 
-    nav a {
-      color: var(--text-secondary);
-      text-decoration: none;
-      font-family: var(--font-mono);
-      font-size: 0.75rem;
-      letter-spacing: 0.08em;
-      transition: color 0.2s;
-    }
+    <div class="font-mono text-xs md:text-sm text-ukryellow/90 tracking-wide max-w-2xl mb-8 flex flex-wrap justify-center items-center gap-x-4 gap-y-1">
+      <span>THE COLLAPSE OF HOMES</span>
+      <span class="text-white/30">•</span>
+      <span>THE EXODUS OF MILLIONS</span>
+      <span class="text-white/30">•</span>
+      <span class="text-scar">THE LASTING EFFECTS OF TRAUMA</span>
+    </div>
 
-    nav a:hover {
-      color: var(--ukraine-yellow);
-    }
+    <p class="max-w-2xl text-sm md:text-base text-zinc-400 font-light leading-relaxed mb-10">
+      On February 24, 2022, the Russian military launched a full-scale invasion of Ukraine, precipitating Europe’s most catastrophic destruction since 1945. While concrete facades, power grids, and high-rises are budgeted for physical restoration, millions of people affected by war experience psychological distress that can persist over time, requiring enduring treatment and social support to heal.
+    </p>
 
-    .audio-toggle-btn {
-      background: rgba(255, 255, 255, 0.05);
-      border: 1px solid var(--border-accent);
-      color: var(--text-primary);
-      padding: 0.35rem 0.8rem;
-      font-family: var(--font-mono);
-      font-size: 0.7rem;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      transition: all 0.2s;
-    }
+    <div class="flex flex-col sm:flex-row items-center gap-4">
+      <a href="#act-01" class="px-8 py-3.5 rounded bg-gradient-to-r from-ukrblue to-scar hover:from-blue-700 hover:to-red-700 text-white font-mono text-xs tracking-widest uppercase transition-all shadow-xl shadow-scar/20 flex items-center gap-2">
+        <span>ENTER THE EVIDENCE DOSSIER</span>
+        <svg class="w-4 h-4 fill-current" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 3a1 1 0 011 1v10.586l3.293-3.293a1 1 0 111.414 1.414l-5 5a1 1 0 01-1.414 0l-5-5a1 1 0 111.414-1.414L9 14.586V4a1 1 0 011-1z" clip-rule="evenodd"/></svg>
+      </a>
+      <span class="text-xs font-mono text-zinc-400 flex items-center gap-1.5">
+        <span class="w-1.5 h-1.5 rounded-full bg-ukryellow"></span>
+        Click anywhere to test structural blast cracks
+      </span>
+    </div>
 
-    .audio-toggle-btn.active {
-      border-color: var(--war-crimson-bright);
-      background: rgba(163, 24, 36, 0.2);
-    }
+    <div class="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center opacity-60">
+      <div class="w-5 h-8 border border-white/30 rounded-full flex justify-center p-1">
+        <div class="w-1 h-2 bg-ukryellow rounded-full animate-bounce"></div>
+      </div>
+      <span class="font-mono text-[9px] tracking-widest text-zinc-500 mt-2">SCROLL DOWN TO EXAMINE THE EVIDENCE</span>
+    </div>
+  </section>
 
-    /* Hero Section */
-    .hero {
-      position: relative;
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      text-align: center;
-      padding: 6rem 2rem 4rem;
-      background: radial-gradient(circle at 50% 30%, rgba(0, 87, 183, 0.12) 0%, rgba(6, 8, 13, 1) 70%);
-      z-index: 15;
-    }
+  <!-- Sticky Sub-Nav -->
+  <div class="sticky top-[53px] z-40 bg-void/95 backdrop-blur border-y border-white/10 py-3 px-6 hidden sm:block">
+    <div class="max-w-6xl mx-auto grid grid-cols-4 gap-4 text-left font-mono text-xs">
+      <div class="border-l-2 border-ukryellow pl-2">
+        <span class="text-zinc-500 block text-[10px]">ACT 01</span>
+        <span class="text-chalk font-semibold">The Collapse</span>
+      </div>
+      <div class="border-l-2 border-ukrblue hover:border-ukryellow pl-2">
+        <span class="text-zinc-500 block text-[10px]">ACT 02</span>
+        <span class="text-chalk font-semibold">Displacement</span>
+      </div>
+      <div class="border-l-2 border-zinc-700 hover:border-scar pl-2">
+        <span class="text-zinc-500 block text-[10px]">ACT 03</span>
+        <span class="text-chalk font-semibold">Invisible Wounds</span>
+      </div>
+      <div class="border-l-2 border-zinc-700 hover:border-kintsugi pl-2">
+        <span class="text-zinc-500 block text-[10px]">ACT 04</span>
+        <span class="text-chalk font-semibold">Limits of Repair</span>
+      </div>
+    </div>
+  </div>
 
-    .hero-pre-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.6rem;
-      padding: 0.3rem 0.9rem;
-      background: rgba(255, 215, 0, 0.08);
-      border: 1px solid rgba(255, 215, 0, 0.3);
-      color: var(--ukraine-yellow);
-      font-family: var(--font-mono);
-      font-size: 0.7rem;
-      letter-spacing: 0.15em;
-      margin-bottom: 2rem;
-    }
+  <main class="max-w-6xl mx-auto px-6 py-20 space-y-40 relative z-10">
 
-    .hero-title {
-      font-family: var(--font-display);
-      font-size: clamp(3rem, 7vw, 6rem);
-      font-weight: 900;
-      letter-spacing: 0.25em;
-      text-transform: uppercase;
-      line-height: 1.1;
-      margin-bottom: 0.5rem;
-      color: #fff;
-      text-shadow: 0 0 30px rgba(0, 87, 183, 0.4);
-    }
+    <!-- =====================================================================
+         ACT 01: THE COLLAPSE (PHYSICAL DESTRUCTION SIMULATOR)
+         ===================================================================== -->
+    <section id="act-01" class="scroll-mt-32">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-start">
+        <div class="lg:col-span-5 space-y-6">
+          <div class="inline-block font-mono text-scar text-xs tracking-widest uppercase">ACT 01 // PHYSICAL DEVASTATION</div>
+          <h2 class="text-3xl md:text-5xl font-serif font-bold leading-tight">
+            The Collapse:<br>Instant Evaporation of Shelter
+          </h2>
+          <p class="text-zinc-400 text-sm leading-relaxed">
+            According to the World Bank, European Union, United Nations, and Government of Ukraine RDNA5 (February 2026), as of <strong>2025-12-31</strong> approximately <strong>14% of Ukraine’s total housing stock had been damaged or destroyed</strong>, affecting over 3 million households.
+          </p>
 
-    .hero-subtitle {
-      font-family: var(--font-display);
-      font-size: clamp(1.1rem, 2.5vw, 1.8rem);
-      color: var(--text-secondary);
-      letter-spacing: 0.15em;
-      margin-bottom: 1.5rem;
-      font-weight: 400;
-    }
-
-    .hero-strip {
-      display: flex;
-      gap: 1.2rem;
-      align-items: center;
-      font-family: var(--font-mono);
-      font-size: 0.75rem;
-      color: var(--war-crimson-bright);
-      margin-bottom: 2rem;
-      letter-spacing: 0.12em;
-    }
-
-    .hero-desc {
-      max-width: 680px;
-      color: var(--text-secondary);
-      font-size: 1rem;
-      line-height: 1.8;
-      margin-bottom: 3rem;
-    }
-
-    .scroll-hint {
-      font-family: var(--font-mono);
-      font-size: 0.7rem;
-      color: var(--text-muted);
-      letter-spacing: 0.15em;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 0.5rem;
-    }
-
-    /* Main Container & Act Scaffolding */
-    main {
-      position: relative;
-      z-index: 15;
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 0 2rem 6rem;
-    }
-
-    .act-section {
-      min-height: 100vh;
-      padding: 6rem 0;
-      border-bottom: 1px solid var(--border-subtle);
-    }
-
-    .act-header {
-      margin-bottom: 3rem;
-    }
-
-    .act-badge {
-      display: inline-block;
-      font-family: var(--font-mono);
-      font-size: 0.75rem;
-      color: var(--ukraine-yellow);
-      letter-spacing: 0.15em;
-      margin-bottom: 0.5rem;
-    }
-
-    .act-title {
-      font-family: var(--font-display);
-      font-size: clamp(1.8rem, 3.5vw, 2.8rem);
-      line-height: 1.2;
-      margin-bottom: 1rem;
-    }
-
-    .act-desc {
-      color: var(--text-secondary);
-      max-width: 760px;
-      font-size: 1rem;
-      line-height: 1.7;
-    }
-
-    /* Act 1 Grid & Collapse Simulator */
-    .collapse-grid {
-      display: grid;
-      grid-template-columns: 1fr 1.2fr;
-      gap: 3rem;
-      align-items: start;
-    }
-
-    .metric-cards {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 1rem;
-      margin-top: 1.5rem;
-    }
-
-    .metric-card {
-      background: var(--bg-panel);
-      border: 1px solid var(--border-subtle);
-      padding: 1.2rem;
-      border-left: 3px solid var(--ukraine-yellow);
-    }
-
-    .metric-card .label {
-      font-family: var(--font-mono);
-      font-size: 0.7rem;
-      color: var(--text-muted);
-      display: block;
-      margin-bottom: 0.4rem;
-    }
-
-    .metric-card .val {
-      font-family: var(--font-display);
-      font-size: 1.8rem;
-      font-weight: 700;
-      color: #fff;
-    }
-
-    .metric-card .sub {
-      font-size: 0.75rem;
-      color: var(--text-secondary);
-      margin-top: 0.3rem;
-      display: block;
-    }
-
-    .sim-panel {
-      background: var(--bg-panel);
-      border: 1px solid var(--border-subtle);
-      padding: 1.5rem;
-    }
-
-    .sim-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 1rem;
-      border-bottom: 1px solid var(--border-subtle);
-      padding-bottom: 0.75rem;
-      font-family: var(--font-mono);
-      font-size: 0.75rem;
-      color: var(--text-secondary);
-    }
-
-    .canvas-box {
-      position: relative;
-      width: 100%;
-      height: 380px;
-      background: #040508;
-      border: 1px solid var(--border-accent);
-      cursor: crosshair;
-    }
-
-    #building-canvas {
-      width: 100%;
-      height: 100%;
-    }
-
-    .sim-controls {
-      display: flex;
-      gap: 0.8rem;
-      margin-top: 1rem;
-    }
-
-    .sim-btn {
-      background: var(--bg-panel-subtle);
-      border: 1px solid var(--border-accent);
-      color: var(--text-primary);
-      padding: 0.5rem 1rem;
-      font-family: var(--font-mono);
-      font-size: 0.75rem;
-      cursor: pointer;
-      transition: all 0.2s;
-    }
-
-    .sim-btn:hover {
-      border-color: var(--ukraine-yellow);
-      background: rgba(255, 215, 0, 0.1);
-    }
-
-    /* Act 2 Displacement Map */
-    .displacement-box {
-      display: flex;
-      flex-direction: column;
-      gap: 1.5rem;
-    }
-
-    .map-canvas-container {
-      position: relative;
-      width: 100%;
-      height: 480px;
-      background: #04060a;
-      border: 1px solid var(--border-accent);
-    }
-
-    #map-canvas {
-      width: 100%;
-      height: 100%;
-    }
-
-    .cohort-cards {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 1.5rem;
-      margin-top: 1.5rem;
-    }
-
-    .cohort-card {
-      background: var(--bg-panel);
-      border: 1px solid var(--border-subtle);
-      padding: 1.5rem;
-    }
-
-    .cohort-card.active {
-      border-color: var(--war-crimson-bright);
-    }
-
-    .cohort-badge {
-      font-family: var(--font-mono);
-      font-size: 0.68rem;
-      color: var(--ukraine-yellow);
-      margin-bottom: 0.5rem;
-      display: block;
-    }
-
-    .cohort-title {
-      font-family: var(--font-display);
-      font-size: 1.1rem;
-      margin-bottom: 0.8rem;
-    }
-
-    .cohort-desc {
-      font-size: 0.85rem;
-      color: var(--text-secondary);
-      line-height: 1.5;
-      margin-bottom: 1rem;
-    }
-
-    .cohort-stat {
-      border-top: 1px dashed var(
+          <!-- Verified Met
