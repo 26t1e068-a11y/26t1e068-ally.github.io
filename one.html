@@ -59,216 +59,291 @@
     .ukraine-glow {
       text-shadow: 0 0 25px rgba(0, 87, 183, 0.6), 0 0 45px rgba(255, 215, 0, 0.35);
     }
+
+    /* High-visibility keyboard focus indicator */
+    :focus-visible {
+      outline: 2px solid #FFD700 !important;
+      outline-offset: 3px !important;
+    }
+
+    /* Accessible details summary marker styling */
+    details > summary {
+      list-style: none;
+    }
+    details > summary::-webkit-details-marker {
+      display: none;
+    }
   </style>
 </head>
-<body class="bg-void text-chalk font-sans antialiased selection:bg-scar selection:text-white relative overflow-x-hidden blueprint-grid">
+<body class="bg-void text-chalk font-sans antialiased selection:bg-scar selection:text-white relative overflow-x-hidden blueprint-grid text-base leading-relaxed">
+
+  <!-- Skip Navigation Link for Keyboard & Screen Reader Users -->
+  <a href="#main-content" class="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-[100] focus:px-4 focus:py-2 focus:bg-ukryellow focus:text-void focus:font-mono focus:text-xs focus:font-bold focus:rounded">
+    SKIP TO MAIN EVIDENCE DOSSIER
+  </a>
 
   <!-- Scroll-Driven Ambient Atmosphere Layer -->
-  <div id="warAtmosphereOverlay" class="fixed inset-0 pointer-events-none z-0 opacity-100" style="background: radial-gradient(circle at 50% 15%, rgba(0, 87, 183, 0.16) 0%, rgba(255, 215, 0, 0.08) 35%, rgba(6, 8, 13, 0.95) 80%);"></div>
+  <div id="warAtmosphereOverlay" aria-hidden="true" class="fixed inset-0 pointer-events-none z-0 opacity-100" style="background: radial-gradient(circle at 50% 15%, rgba(0, 87, 183, 0.16) 0%, rgba(255, 215, 0, 0.08) 35%, rgba(6, 8, 13, 0.95) 80%);"></div>
 
   <!-- Interactive Background Canvas (Fracture Cracks) -->
-  <canvas id="crackCanvas" class="fixed inset-0 pointer-events-none z-0 opacity-40 transition-opacity duration-1000"></canvas>
+  <canvas id="crackCanvas" aria-hidden="true" class="fixed inset-0 pointer-events-none z-0 opacity-40 transition-opacity duration-1000"></canvas>
 
   <!-- Sticky Global Header -->
-  <header class="fixed top-0 left-0 w-full z-50 backdrop-blur-md bg-void/90 border-b border-white/10 px-5 md:px-8 py-3.5 flex justify-between items-center transition-all">
+  <header class="fixed top-0 left-0 w-full z-50 backdrop-blur-md bg-void/95 border-b border-white/15 px-4 sm:px-6 md:px-8 py-3 flex justify-between items-center transition-all">
     <div class="flex items-center space-x-3">
-      <div class="flex items-center space-x-1.5 px-2.5 py-1 rounded bg-black/60 border border-white/15">
-        <span class="inline-block w-2 h-2 rounded-full bg-ukrblue"></span>
-        <span class="inline-block w-2 h-2 rounded-full bg-ukryellow"></span>
-        <span class="inline-block w-1.5 h-1.5 rounded-full bg-scar animate-ping ml-1"></span>
-        <span class="font-mono text-[11px] font-bold tracking-wider text-chalk ml-1 uppercase">UKRAINE DOSSIER · FEB 24, 2022 – PRESENT</span>
+      <div class="flex items-center space-x-1.5 px-2.5 py-1 rounded bg-black/70 border border-white/20">
+        <span class="inline-block w-2 h-2 rounded-full bg-ukrblue" aria-hidden="true"></span>
+        <span class="inline-block w-2 h-2 rounded-full bg-ukryellow" aria-hidden="true"></span>
+        <span class="inline-block w-1.5 h-1.5 rounded-full bg-scar animate-ping ml-1" aria-hidden="true"></span>
+        <span class="font-mono text-xs font-bold tracking-wider text-chalk ml-1 uppercase">UKRAINE DOSSIER · FEB 24, 2022 – PRESENT</span>
       </div>
     </div>
 
-    <nav class="hidden lg:flex items-center space-x-6 text-xs font-mono text-ash">
-      <a href="#act-01" class="hover:text-ukryellow transition-colors">01. COLLAPSE</a>
-      <span class="opacity-20">/</span>
-      <a href="#act-02" class="hover:text-amber-400 transition-colors">02. DISPLACEMENT</a>
-      <span class="opacity-20">/</span>
-      <a href="#act-03" class="hover:text-scar transition-colors">03. INVISIBLE WOUNDS</a>
-      <span class="opacity-20">/</span>
-      <a href="#act-04" class="hover:text-kintsugi transition-colors">04. LIMITS OF REPAIR</a>
+    <nav aria-label="Primary Act Navigation" class="hidden lg:flex items-center space-x-5 text-xs font-mono text-zinc-300">
+      <a href="#act-01" class="hover:text-ukryellow transition-colors py-1">01. COLLAPSE</a>
+      <span class="opacity-25" aria-hidden="true">/</span>
+      <a href="#act-02" class="hover:text-amber-400 transition-colors py-1">02. DISPLACEMENT</a>
+      <span class="opacity-25" aria-hidden="true">/</span>
+      <a href="#act-03" class="hover:text-scar transition-colors py-1">03. INVISIBLE WOUNDS</a>
+      <span class="opacity-25" aria-hidden="true">/</span>
+      <a href="#act-04" class="hover:text-kintsugi transition-colors py-1">04. LIMITS OF REPAIR</a>
+      <span class="opacity-25" aria-hidden="true">/</span>
+      <a href="#references" class="hover:text-white transition-colors py-1">SOURCES</a>
     </nav>
 
-    <!-- Audio Atmosphere Controller (Realistic Distant Artillery Rumble) -->
+    <!-- Prominent Accessible Audio Atmosphere Controller -->
     <div class="flex items-center space-x-3">
-      <button id="audioToggle" class="flex items-center space-x-2 text-xs font-mono px-3 py-1.5 rounded border border-white/20 hover:border-scar hover:text-scar transition-all bg-asphalt">
-        <span id="audioIcon">🔇</span>
-        <span id="audioText">SOUNDSCAPE: OFF</span>
+      <button 
+        id="audioToggle" 
+        type="button"
+        aria-pressed="false"
+        aria-label="Toggle distant artillery ambient soundscape"
+        class="flex items-center space-x-2 text-xs font-mono font-semibold px-3.5 py-2 rounded border border-white/30 hover:border-ukryellow hover:text-ukryellow transition-all bg-asphalt text-chalk shadow-sm"
+      >
+        <span id="audioIcon" aria-hidden="true">🔇</span>
+        <span id="audioText">AUDIO: OFF</span>
       </button>
     </div>
   </header>
 
   <!-- Hero Section -->
-  <section class="min-h-screen flex flex-col justify-center items-center text-center px-6 relative z-10 pt-20">
-    <div class="inline-flex items-center gap-2 px-4 py-1.5 mb-6 rounded-full border border-ukryellow/30 bg-black/50 backdrop-blur text-ukryellow font-mono text-xs tracking-widest uppercase shadow-lg shadow-ukrblue/20">
-      <span class="w-2 h-2 rounded-full bg-ukrblue"></span>
-      <span>FORENSIC INVESTIGATION: RUSSIAN INVASION OF UKRAINE</span>
-      <span class="text-scar font-bold">● ACTIVE WARTIME TOLL</span>
+  <section class="min-h-screen flex flex-col justify-center items-center text-center px-5 sm:px-6 relative z-10 pt-24 pb-16">
+    <div class="inline-flex flex-wrap justify-center items-center gap-2 px-4 py-1.5 mb-6 rounded-full border border-ukryellow/40 bg-black/60 backdrop-blur text-ukryellow font-mono text-xs tracking-widest uppercase shadow-lg shadow-ukrblue/20">
+      <span class="w-2 h-2 rounded-full bg-ukrblue" aria-hidden="true"></span>
+      <span>DATA STORYTELLING: RUSSIAN INVASION OF UKRAINE</span>
+      <span class="text-scar font-bold">● DOCUMENTARY DOSSIER</span>
     </div>
 
     <!-- Shattered Ukraine Flag Emblem -->
-    <div class="w-48 h-1.5 flag-split rounded-full mb-6 relative overflow-hidden shadow-md shadow-scar/30">
+    <div aria-hidden="true" class="w-48 h-1.5 flag-split rounded-full mb-6 relative overflow-hidden shadow-md shadow-scar/30">
       <div class="absolute inset-0 bg-void/20 animate-pulse"></div>
     </div>
     
-    <h1 class="text-5xl md:text-8xl font-serif font-black tracking-tight mb-3 ukraine-glow">
+    <h1 class="text-4xl sm:text-6xl md:text-8xl font-serif font-black tracking-tight mb-3 ukraine-glow">
       IRREVERSIBLE
     </h1>
-    <h2 class="text-xl md:text-3xl font-serif text-slate-300 font-light tracking-widest max-w-4xl mb-4 uppercase">
+    <h2 class="text-lg sm:text-2xl md:text-3xl font-serif text-slate-200 font-light tracking-widest max-w-4xl mb-4 uppercase">
       The Lasting Effects of War
     </h2>
 
-    <div class="font-mono text-xs md:text-sm text-ukryellow/90 tracking-wide max-w-2xl mb-8 flex flex-wrap justify-center items-center gap-x-4 gap-y-1">
+    <div class="font-mono text-xs sm:text-sm text-ukryellow tracking-wide max-w-2xl mb-8 flex flex-wrap justify-center items-center gap-x-3 gap-y-1.5">
       <span>THE COLLAPSE OF HOMES</span>
-      <span class="text-white/30">•</span>
+      <span class="text-white/30" aria-hidden="true">•</span>
       <span>THE EXODUS OF MILLIONS</span>
-      <span class="text-white/30">•</span>
-      <span class="text-scar">THE LASTING EFFECTS OF TRAUMA</span>
+      <span class="text-white/30" aria-hidden="true">•</span>
+      <span class="text-scar font-semibold">ENDURING PSYCHOLOGICAL SCARS</span>
     </div>
 
-    <p class="max-w-2xl text-sm md:text-base text-zinc-400 font-light leading-relaxed mb-10">
-      On February 24, 2022, the Russian military launched a full-scale invasion of Ukraine, precipitating Europe’s most catastrophic destruction since 1945. While concrete facades, power grids, and high-rises are budgeted for physical restoration, millions of people affected by war experience psychological distress that can persist over time, requiring enduring treatment and social support to heal.
+    <p class="max-w-2xl text-base text-zinc-300 font-light leading-relaxed mb-10">
+      On February 24, 2022, the Russian Federation launched a full-scale military invasion of Ukraine, triggering widespread destruction of civilian infrastructure and large-scale human displacement (<a href="#ref-rdna5" class="underline decoration-ukryellow/60 hover:text-ukryellow">World Bank et al., 2026</a>; <a href="#ref-unhcr" class="underline decoration-ukryellow/60 hover:text-ukryellow">UNHCR, 2025</a>). While damaged masonry and housing stock can be rebuilt over time, war leaves deep, long-lasting psychological wounds—though evidence-based clinical treatment and sustained social support can help survivors heal.
     </p>
 
     <div class="flex flex-col sm:flex-row items-center gap-4">
-      <a href="#act-01" class="px-8 py-3.5 rounded bg-gradient-to-r from-ukrblue to-scar hover:from-blue-700 hover:to-red-700 text-white font-mono text-xs tracking-widest uppercase transition-all shadow-xl shadow-scar/20 flex items-center gap-2">
+      <a href="#act-01" class="px-8 py-3.5 rounded bg-gradient-to-r from-ukrblue to-scar hover:from-blue-700 hover:to-red-700 text-white font-mono text-xs font-bold tracking-widest uppercase transition-all shadow-xl shadow-scar/20 flex items-center gap-2">
         <span>ENTER THE EVIDENCE DOSSIER</span>
-        <svg class="w-4 h-4 fill-current" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 3a1 1 0 011 1v10.586l3.293-3.293a1 1 0 111.414 1.414l-5 5a1 1 0 01-1.414 0l-5-5a1 1 0 111.414-1.414L9 14.586V4a1 1 0 011-1z" clip-rule="evenodd"/></svg>
+        <svg class="w-4 h-4 fill-current" aria-hidden="true" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 3a1 1 0 011 1v10.586l3.293-3.293a1 1 0 111.414 1.414l-5 5a1 1 0 01-1.414 0l-5-5a1 1 0 111.414-1.414L9 14.586V4a1 1 0 011-1z" clip-rule="evenodd"/></svg>
       </a>
-      <span class="text-xs font-mono text-zinc-400 flex items-center gap-1.5">
-        <span class="w-1.5 h-1.5 rounded-full bg-ukryellow"></span>
-        Click anywhere to test structural blast cracks
+      <span class="text-xs font-mono text-zinc-300 flex items-center gap-1.5">
+        <span class="w-1.5 h-1.5 rounded-full bg-ukryellow" aria-hidden="true"></span>
+        Click background to generate visual fracture lines
       </span>
     </div>
 
-    <div class="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center opacity-60">
-      <div class="w-5 h-8 border border-white/30 rounded-full flex justify-center p-1">
+    <div aria-hidden="true" class="mt-14 flex flex-col items-center opacity-70">
+      <div class="w-5 h-8 border border-white/40 rounded-full flex justify-center p-1">
         <div class="w-1 h-2 bg-ukryellow rounded-full animate-bounce"></div>
       </div>
-      <span class="font-mono text-[9px] tracking-widest text-zinc-500 mt-2">SCROLL DOWN TO EXAMINE THE EVIDENCE</span>
+      <span class="font-mono text-xs tracking-widest text-zinc-400 mt-2">SCROLL DOWN TO EXAMINE THE EVIDENCE</span>
     </div>
   </section>
 
   <!-- Sticky Sub-Nav -->
-  <div class="sticky top-[53px] z-40 bg-void/95 backdrop-blur border-y border-white/10 py-3 px-6 hidden sm:block">
+  <div aria-label="Section Progress Indicators" class="sticky top-[57px] z-40 bg-void/95 backdrop-blur border-y border-white/15 py-2.5 px-6 hidden sm:block">
     <div class="max-w-6xl mx-auto grid grid-cols-4 gap-4 text-left font-mono text-xs">
-      <div class="border-l-2 border-ukryellow pl-2">
-        <span class="text-zinc-500 block text-[10px]">ACT 01</span>
+      <a href="#act-01" class="border-l-2 border-ukryellow pl-2.5 hover:text-ukryellow transition-colors">
+        <span class="text-zinc-400 block text-[11px]">ACT 01</span>
         <span class="text-chalk font-semibold">The Collapse</span>
-      </div>
-      <div class="border-l-2 border-ukrblue hover:border-ukryellow pl-2">
-        <span class="text-zinc-500 block text-[10px]">ACT 02</span>
+      </a>
+      <a href="#act-02" class="border-l-2 border-ukrblue hover:border-ukryellow pl-2.5 hover:text-ukryellow transition-colors">
+        <span class="text-zinc-400 block text-[11px]">ACT 02</span>
         <span class="text-chalk font-semibold">Displacement</span>
-      </div>
-      <div class="border-l-2 border-zinc-700 hover:border-scar pl-2">
-        <span class="text-zinc-500 block text-[10px]">ACT 03</span>
+      </a>
+      <a href="#act-03" class="border-l-2 border-zinc-600 hover:border-scar pl-2.5 hover:text-scar transition-colors">
+        <span class="text-zinc-400 block text-[11px]">ACT 03</span>
         <span class="text-chalk font-semibold">Invisible Wounds</span>
-      </div>
-      <div class="border-l-2 border-zinc-700 hover:border-kintsugi pl-2">
-        <span class="text-zinc-500 block text-[10px]">ACT 04</span>
+      </a>
+      <a href="#act-04" class="border-l-2 border-zinc-600 hover:border-kintsugi pl-2.5 hover:text-kintsugi transition-colors">
+        <span class="text-zinc-400 block text-[11px]">ACT 04</span>
         <span class="text-chalk font-semibold">Limits of Repair</span>
-      </div>
+      </a>
     </div>
   </div>
 
-  <main class="max-w-6xl mx-auto px-6 py-20 space-y-40 relative z-10">
+  <main id="main-content" class="max-w-6xl mx-auto px-5 sm:px-6 py-16 sm:py-20 space-y-32 sm:space-y-40 relative z-10">
 
     <!-- =====================================================================
          ACT 01: THE COLLAPSE (PHYSICAL DESTRUCTION SIMULATOR)
          ===================================================================== -->
-    <section id="act-01" class="scroll-mt-32">
-      <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-start">
+    <section id="act-01" aria-labelledby="act01-heading" class="scroll-mt-32">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-start">
         <div class="lg:col-span-5 space-y-6">
-          <div class="inline-block font-mono text-scar text-xs tracking-widest uppercase">ACT 01 // PHYSICAL DEVASTATION</div>
-          <h2 class="text-3xl md:text-5xl font-serif font-bold leading-tight">
+          <div class="inline-block font-mono text-scar text-xs font-bold tracking-widest uppercase">ACT 01 // PHYSICAL DEVASTATION</div>
+          <h2 id="act01-heading" class="text-3xl md:text-5xl font-serif font-bold leading-tight">
             The Collapse:<br>Instant Evaporation of Shelter
           </h2>
-          <p class="text-zinc-400 text-sm leading-relaxed">
-            According to the World Bank, European Union, United Nations, and Government of Ukraine RDNA5 (February 2026), as of <strong>2025-12-31</strong> approximately <strong>14% of Ukraine’s total housing stock had been damaged or destroyed</strong>, affecting over 3 million households.
+          <p class="text-zinc-300 text-base leading-relaxed">
+            According to the joint <em>Fifth Rapid Damage and Needs Assessment (RDNA5)</em> by the World Bank, Government of Ukraine, European Union, and United Nations (<a href="#ref-rdna5" class="underline decoration-ukryellow/60 hover:text-ukryellow">February 2026</a>), as of <strong>December 31, 2025</strong> approximately <strong>14% of Ukraine’s total housing stock had been damaged or destroyed</strong>, directly affecting more than 3 million households.
           </p>
 
           <!-- Verified Metrics Readouts -->
-          <div class="grid grid-cols-2 gap-3 pt-2 font-mono">
-            <div class="bg-asphalt p-4 rounded border border-white/5 hover:border-scar/40 transition-colors">
-              <span class="text-[10px] text-zinc-500 uppercase block">Housing Stock Damaged</span>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5 pt-1 font-mono">
+            <div class="bg-asphalt p-4 rounded border border-white/10 hover:border-scar/50 transition-colors">
+              <span class="text-xs text-zinc-400 uppercase block">Housing Stock Damaged</span>
               <span class="text-2xl font-bold text-amber-400 mt-1 block">~14%</span>
-              <span class="text-[10px] text-zinc-500">Of national living units</span>
+              <span class="text-xs text-zinc-400 mt-1 block">Of national housing stock (RDNA5, as of 2025-12-31)</span>
             </div>
-            <div class="bg-asphalt p-4 rounded border border-white/5 hover:border-scar/40 transition-colors">
-              <span class="text-[10px] text-zinc-500 uppercase block">Households Affected</span>
+            <div class="bg-asphalt p-4 rounded border border-white/10 hover:border-scar/50 transition-colors">
+              <span class="text-xs text-zinc-400 uppercase block">Households Affected</span>
               <span class="text-2xl font-bold text-chalk mt-1 block">3M+</span>
-              <span class="text-[10px] text-zinc-500">As of Dec 31, 2025</span>
+              <span class="text-xs text-zinc-400 mt-1 block">Residential households impacted (as of 2025-12-31)</span>
             </div>
-            <div class="bg-asphalt p-4 rounded border border-white/5 hover:border-scar/40 transition-colors">
-              <span class="text-[10px] text-zinc-500 uppercase block">Education Facilities</span>
+            <div class="bg-asphalt p-4 rounded border border-white/10 hover:border-scar/50 transition-colors">
+              <span class="text-xs text-zinc-400 uppercase block">Educational Institutions</span>
               <span class="text-2xl font-bold text-scar mt-1 block">3,798</span>
-              <span class="text-[10px] text-zinc-500">365 fully destroyed (May 2024)</span>
+              <span class="text-xs text-zinc-400 mt-1 block">3,798 damaged, incl. 365 destroyed (MoES Ukraine / Save Schools, as of Feb 2024)</span>
             </div>
-            <div class="bg-asphalt p-4 rounded border border-white/5 hover:border-scar/40 transition-colors">
-              <span class="text-[10px] text-zinc-500 uppercase block">Assessment Baseline</span>
+            <div class="bg-asphalt p-4 rounded border border-white/10 hover:border-scar/50 transition-colors">
+              <span class="text-xs text-zinc-400 uppercase block">Primary Baseline</span>
               <span class="text-2xl font-bold text-chalk mt-1 block">RDNA5</span>
-              <span class="text-[10px] text-zinc-500">World Bank / UN / EU</span>
+              <span class="text-xs text-zinc-400 mt-1 block">World Bank / GoU / EU / UN (Feb 2026)</span>
             </div>
           </div>
 
-          <div class="text-[11px] font-mono text-zinc-500 border-l border-white/20 pl-3">
-            Sources: World Bank, EU, UN, and Govt of Ukraine, RDNA5 (Feb 2026; cutoff 2025-12-31); World Bank (education institutions, May 2024); Lisovyi et al. (2022).
+          <div class="text-xs font-mono text-zinc-300 bg-asphalt/70 p-3.5 rounded border-l-2 border-ukryellow leading-relaxed">
+            <strong>Data Attribution:</strong> Housing figures from <a href="#ref-rdna5" class="underline hover:text-ukryellow">World Bank et al., RDNA5 (Feb 2026, Housing Sector, cutoff 2025-12-31)</a>. School damage statistics (3,798 damaged; 365 destroyed) compiled by the <a href="#ref-moes" class="underline hover:text-ukryellow">Ministry of Education and Science of Ukraine (MoES) / Save Schools database</a> (as of Feb 2024, cited in RDNA3/Education). Structural case context inspired by <a href="#ref-lisovyi" class="underline hover:text-ukryellow">Lisovyi et al. (2022)</a>.
           </div>
         </div>
 
         <!-- Vertical High-Rise Structural Collapse Canvas Simulator -->
-        <div class="lg:col-span-7 bg-asphalt border border-white/10 rounded-xl p-5 shadow-2xl relative overflow-hidden">
+        <div class="lg:col-span-7 bg-asphalt border border-white/15 rounded-xl p-5 shadow-2xl relative overflow-hidden">
           <div class="flex flex-wrap justify-between items-center pb-3 border-b border-white/10 gap-2 font-mono text-xs">
             <div class="flex items-center space-x-2">
-              <span class="w-2 h-2 rounded-full bg-scar animate-pulse"></span>
-              <span class="text-zinc-300 font-bold uppercase tracking-wider">FORENSIC STRUCTURAL COLLAPSE LAB</span>
+              <span class="w-2 h-2 rounded-full bg-scar animate-pulse" aria-hidden="true"></span>
+              <span class="text-zinc-200 font-bold uppercase tracking-wider">CONCEPTUAL STRUCTURAL COLLAPSE ILLUSTRATION</span>
             </div>
-            <div class="text-zinc-500 text-[11px]">CASE: KYIV LOBANOVSKY AVE HIGH-RISE</div>
+            <div class="text-zinc-400 text-xs">CONTEXT: KYIV LOBANOVSKY AVE CASE</div>
+          </div>
+
+          <!-- Mandatory Conceptual Disclaimer Banner -->
+          <div role="note" class="mt-3 px-3.5 py-2.5 rounded bg-amber-950/40 border border-amber-500/40 font-mono text-xs text-amber-200 leading-relaxed">
+            <strong>Disclaimer:</strong> Conceptual illustration only; not a verified structural analysis, engineering safety assessment, or damage prediction.
           </div>
 
           <!-- Canvas Simulation Stage -->
-          <div class="relative w-full aspect-[4/3] bg-void rounded border border-white/10 mt-3 overflow-hidden select-none">
-            <canvas id="buildingSimCanvas" class="w-full h-full cursor-crosshair block"></canvas>
+          <div class="relative w-full aspect-[4/3] bg-void rounded border border-white/15 mt-3 overflow-hidden select-none">
+            <canvas 
+              id="buildingSimCanvas" 
+              tabindex="0"
+              role="img"
+              aria-label="Interactive conceptual illustration of a 6-story residential building facade. Click or press Enter/Space to simulate schematic impact fractures."
+              class="w-full h-full cursor-crosshair block"
+            ></canvas>
             
-            <div class="absolute top-3 left-3 bg-asphalt/85 backdrop-blur px-3 py-1.5 rounded border border-white/10 font-mono text-[10px] text-zinc-400 pointer-events-none">
-              CLICK ANY FLOOR SLAB TO INITIATE ARTILLERY IMPACT
+            <div aria-hidden="true" class="hidden sm:block absolute top-3 left-3 bg-asphalt/90 backdrop-blur px-3 py-1.5 rounded border border-white/15 font-mono text-xs text-zinc-300 pointer-events-none">
+              CLICK FLOOR SLAB OR USE BUTTONS BELOW
             </div>
 
             <!-- Realtime Telemetry Overlay -->
-            <div class="absolute bottom-3 right-3 bg-asphalt/90 backdrop-blur px-3 py-2 rounded border border-white/15 font-mono text-right text-[11px] space-y-1">
+            <div aria-live="polite" class="absolute bottom-3 right-3 bg-asphalt/95 backdrop-blur px-3 py-2 rounded border border-white/20 font-mono text-right text-xs space-y-1">
               <div>
-                <span class="text-zinc-500">STRUCTURAL INTEGRITY: </span>
+                <span class="text-zinc-400">SCHEMATIC INTACTNESS: </span>
                 <span id="integrityMeter" class="text-green-400 font-bold">100.0%</span>
               </div>
               <div>
-                <span class="text-zinc-500">DEBRIS ACCUMULATED: </span>
-                <span id="debrisMeter" class="text-scar font-bold">0 T</span>
+                <span class="text-zinc-400">VISUAL DEBRIS PARTICLES: </span>
+                <span id="debrisMeter" class="text-scar font-bold">0 UNITS</span>
               </div>
             </div>
           </div>
 
-          <!-- Interactive Action Controls -->
-          <div class="mt-4 grid grid-cols-2 sm:grid-cols-4 gap-2 font-mono text-xs">
-            <button id="btnImpactUpper" class="p-2.5 rounded bg-void border border-white/20 hover:border-scar hover:text-scar transition-all text-left">
-              <span class="text-[10px] text-zinc-500 block">TEST A</span>
-              Strike Upper Floors
+          <!-- Interactive Action Controls (Keyboard & Touch Accessible) -->
+          <div class="mt-4 grid grid-cols-2 sm:grid-cols-4 gap-2.5 font-mono text-xs">
+            <button type="button" id="btnImpactUpper" class="p-3 rounded bg-void border border-white/25 hover:border-scar hover:text-scar transition-all text-left text-zinc-200">
+              <span class="text-[11px] text-zinc-400 block">ILLUSTRATION A</span>
+              Upper Floors
             </button>
-            <button id="btnImpactCore" class="p-2.5 rounded bg-void border border-white/20 hover:border-scar hover:text-scar transition-all text-left">
-              <span class="text-[10px] text-zinc-500 block">TEST B</span>
-              Direct Core Impact
+            <button type="button" id="btnImpactCore" class="p-3 rounded bg-void border border-white/25 hover:border-scar hover:text-scar transition-all text-left text-zinc-200">
+              <span class="text-[11px] text-zinc-400 block">ILLUSTRATION B</span>
+              Central Core
             </button>
-            <button id="btnImpactBase" class="p-2.5 rounded bg-void border border-white/20 hover:border-scar hover:text-scar transition-all text-left">
-              <span class="text-[10px] text-zinc-500 block">TEST C</span>
-              Foundation Shear
+            <button type="button" id="btnImpactBase" class="p-3 rounded bg-void border border-white/25 hover:border-scar hover:text-scar transition-all text-left text-zinc-200">
+              <span class="text-[11px] text-zinc-400 block">ILLUSTRATION C</span>
+              Lower Base
             </button>
-            <button id="btnResetBuilding" class="p-2.5 rounded bg-scar/20 border border-scar text-scar hover:bg-scar hover:text-white transition-all font-bold">
-              ↺ Reset Structure
+            <button type="button" id="btnResetBuilding" class="p-3 rounded bg-scar/20 border border-scar text-scar hover:bg-scar hover:text-white transition-all font-bold">
+              ↺ Reset Visual
             </button>
           </div>
-          <p class="text-[11px] font-mono text-zinc-500 mt-3">
-            Click directly on any residential unit above or choose a scenario. Watch shear cracking propagate through reinforced slabs, generating falling debris and structural failure.
-          </p>
+
+          <!-- Accessible Text Summary & Data Table -->
+          <details class="mt-4 bg-void/90 border border-white/15 rounded-lg p-3.5 font-mono text-xs">
+            <summary class="cursor-pointer font-semibold text-ukryellow flex justify-between items-center">
+              <span>VIEW ACCESSIBLE TEXT SUMMARY & VERIFIED DAMAGE DATA TABLE</span>
+              <span aria-hidden="true">+</span>
+            </summary>
+            <div class="mt-3 space-y-3 text-zinc-300 leading-relaxed">
+              <p>
+                <strong>Visual Summary:</strong> The interactive schematic above depicts a 6-story, 24-unit concrete residential facade inspired by the documented missile strike on Lobanovsky Avenue 6-A in Kyiv (<a href="#ref-lisovyi" class="underline">Lisovyi et al., 2022</a>). Selecting any floor triggers schematic crack propagation and cascading debris to illustrate how localized shelling compromises multi-story residential structures.
+              </p>
+              <div class="overflow-x-auto">
+                <table class="w-full text-left border-collapse border border-white/15 text-xs">
+                  <caption class="text-left text-zinc-400 pb-1.5 font-semibold">Table 1: Verified Structural & Educational Infrastructure Damage Metrics</caption>
+                  <thead>
+                    <tr class="bg-asphalt text-zinc-200 border-b border-white/15">
+                      <th scope="col" class="p-2 border-r border-white/15">Sector / Indicator</th>
+                      <th scope="col" class="p-2 border-r border-white/15">Reported Figure</th>
+                      <th scope="col" class="p-2 border-r border-white/15">Cutoff Date</th>
+                      <th scope="col" class="p-2">Primary Source</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr class="border-b border-white/10">
+                      <th scope="row" class="p-2 border-r border-white/15 font-normal">National Housing Stock Damaged/Destroyed</th>
+                      <td class="p-2 border-r border-white/15 text-amber-400 font-bold">~14% (3M+ households)</td>
+                      <td class="p-2 border-r border-white/15">2025-12-31</td>
+                      <td class="p-2">World Bank, GoU, EU, UN (RDNA5, Feb 2026)</td>
+                    </tr>
+                    <tr>
+                      <th scope="row" class="p-2 border-r border-white/15 font-normal">Educational Institutions Damaged / Destroyed</th>
+                      <td class="p-2 border-r border-white/15 text-scar font-bold">3,798 damaged (365 destroyed)</td>
+                      <td class="p-2 border-r border-white/15">Feb 2024</td>
+                      <td class="p-2">MoES Ukraine / Save Schools (via World Bank RDNA3)</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </details>
         </div>
       </div>
     </section>
@@ -276,191 +351,296 @@
     <!-- =====================================================================
          ACT 02: DISPLACEMENT (GEOGRAPHICAL MIGRATION FLOW MAP)
          ===================================================================== -->
-    <section id="act-02" class="scroll-mt-32">
+    <section id="act-02" aria-labelledby="act02-heading" class="scroll-mt-32">
       <div class="max-w-3xl mb-10">
-        <div class="inline-block font-mono text-scar text-xs tracking-widest uppercase">ACT 02 // MASS HUMAN DISRUPTION</div>
-        <h2 class="text-3xl md:text-5xl font-serif font-bold leading-tight mt-2">
+        <div class="inline-block font-mono text-scar text-xs font-bold tracking-widest uppercase">ACT 02 // MASS HUMAN DISRUPTION</div>
+        <h2 id="act02-heading" class="text-3xl md:text-5xl font-serif font-bold leading-tight mt-2">
           Displacement:<br>Fracturing the Domestic Fabric
         </h2>
-        <p class="text-zinc-400 text-sm leading-relaxed mt-4">
-          Physical destruction directly catalyzed Europe's swiftest migration crisis since 1945. 
-          To scientifically monitor the human fallout, populations are categorized into three verified epidemiological cohorts: 
-          <strong>Non-Displaced Persons (NDP)</strong> who have not experienced displacement (not necessarily located in frontline zones), 
-          <strong>Internally Displaced Persons (IDP)</strong> fleeing west within national borders, 
-          and <strong>Cross-Border Refugees</strong> forced across European frontiers.
+        <p class="text-zinc-300 text-base leading-relaxed mt-4">
+          The full-scale invasion triggered large-scale internal and cross-border displacement (<a href="#ref-unhcr" class="underline decoration-ukryellow/60 hover:text-ukryellow">UNHCR, 2025</a>; <a href="#ref-iom" class="underline decoration-ukryellow/60 hover:text-ukryellow">IOM, 2025</a>). 
+          To examine the human impact across distinct living conditions, populations are grouped into three cohorts: 
+          <strong>Non-Displaced Persons (NDP)</strong> who have not experienced forced displacement, 
+          <strong>Internally Displaced Persons (IDP)</strong> forced to flee their homes within Ukraine’s borders, 
+          and <strong>Cross-Border Refugees</strong> who left Ukraine and reside outside the country.
         </p>
       </div>
 
       <!-- Real Map Migration Flow Interactive Canvas -->
-      <div class="bg-asphalt border border-white/10 rounded-xl p-5 lg:p-7 shadow-2xl">
+      <div class="bg-asphalt border border-white/15 rounded-xl p-5 lg:p-7 shadow-2xl">
         <div class="flex flex-wrap justify-between items-center gap-4 mb-4 pb-3 border-b border-white/10">
           <div>
             <div class="font-mono text-xs text-white font-bold tracking-wider uppercase flex items-center gap-2">
-              <span class="w-2.5 h-2.5 rounded-full bg-scar"></span>
-              UKRAINE & EUROPEAN EXODUS CORRIDORS (MIGRATION STREAM SIMULATION)
+              <span class="w-2.5 h-2.5 rounded-full bg-scar" aria-hidden="true"></span>
+              ILLUSTRATIVE DISPLACEMENT TRAJECTORIES (CONCEPTUAL STREAM VISUALIZATION)
             </div>
-            <div class="font-mono text-[11px] text-zinc-500 mt-0.5">
-              Visualizing origin nodes (Kyiv, Kharkiv, Mariupol) toward Western shelters and EU host nations.
+            <div class="font-mono text-xs text-zinc-300 mt-1">
+              Schematic illustration only: City-to-city arcs are conceptual trajectories, not exact proportional routing or complete global destinations.
             </div>
           </div>
 
-          <div class="flex flex-wrap gap-2 font-mono text-xs">
-            <button id="mapFilterAll" class="map-filter-btn px-3 py-1.5 rounded bg-scar text-white font-bold transition-all">All Cohorts</button>
-            <button id="mapFilterNDP" class="map-filter-btn px-3 py-1.5 rounded bg-void border border-white/20 text-zinc-400 hover:text-white transition-all">NDP (Non-Displaced)</button>
-            <button id="mapFilterIDP" class="map-filter-btn px-3 py-1.5 rounded bg-void border border-white/20 text-zinc-400 hover:text-white transition-all">IDP (Internal Migration)</button>
-            <button id="mapFilterREF" class="map-filter-btn px-3 py-1.5 rounded bg-void border border-white/20 text-zinc-400 hover:text-white transition-all">Refugees (Cross-Border)</button>
+          <div role="group" aria-label="Filter displacement cohorts on map" class="flex flex-wrap gap-2 font-mono text-xs">
+            <button type="button" id="mapFilterAll" aria-pressed="true" class="map-filter-btn px-3.5 py-2 rounded bg-scar text-white font-bold transition-all">All Cohorts</button>
+            <button type="button" id="mapFilterNDP" aria-pressed="false" class="map-filter-btn px-3.5 py-2 rounded bg-void border border-white/25 text-zinc-200 hover:text-white transition-all">NDP (Non-Displaced)</button>
+            <button type="button" id="mapFilterIDP" aria-pressed="false" class="map-filter-btn px-3.5 py-2 rounded bg-void border border-white/25 text-zinc-200 hover:text-white transition-all">IDP (Within Ukraine)</button>
+            <button type="button" id="mapFilterREF" aria-pressed="false" class="map-filter-btn px-3.5 py-2 rounded bg-void border border-white/25 text-zinc-200 hover:text-white transition-all">Refugees (Outside Ukraine)</button>
           </div>
         </div>
 
-        <div class="relative w-full aspect-[16/9] md:aspect-[21/10] bg-void rounded-lg border border-white/10 overflow-hidden">
-          <canvas id="migrationMapCanvas" class="w-full h-full block cursor-crosshair"></canvas>
+        <div class="relative w-full aspect-[16/10] md:aspect-[21/10] bg-void rounded-lg border border-white/15 overflow-hidden">
+          <canvas 
+            id="migrationMapCanvas" 
+            tabindex="0"
+            role="img"
+            aria-label="Conceptual particle map showing illustrative displacement flows from Kyiv, Kharkiv, and Mariupol to internal Ukrainian hubs and international host cities. Use the cohort filter buttons above to inspect each group."
+            class="w-full h-full block cursor-crosshair"
+          ></canvas>
           
-          <div id="mapTooltip" class="absolute hidden bg-asphalt/95 backdrop-blur border border-white/20 p-3 rounded shadow-xl font-mono text-xs pointer-events-none z-30 min-w-[210px]">
-            <div id="tooltipTitle" class="text-white font-bold border-b border-white/10 pb-1 mb-1.5">LOCATION</div>
-            <div class="text-[11px] text-zinc-400 space-y-0.5">
-              <div>Status: <span id="tooltipStatus" class="text-scar">Frontline Conflict Hub</span></div>
-              <div>Estimated Scale: <span id="tooltipMetric" class="text-chalk font-semibold">--</span></div>
+          <div id="mapTooltip" role="status" aria-live="polite" class="absolute hidden bg-asphalt/95 backdrop-blur border border-white/25 p-3 rounded shadow-xl font-mono text-xs pointer-events-none z-30 min-w-[220px]">
+            <div id="tooltipTitle" class="text-white font-bold border-b border-white/15 pb-1 mb-1.5">LOCATION</div>
+            <div class="text-xs text-zinc-300 space-y-0.5">
+              <div>Role: <span id="tooltipStatus" class="text-scar">Illustrative Node</span></div>
+              <div>Note: <span id="tooltipMetric" class="text-chalk font-semibold">--</span></div>
             </div>
           </div>
 
-          <div class="absolute bottom-3 left-3 bg-asphalt/90 backdrop-blur border border-white/10 p-2.5 rounded font-mono text-[10px] space-y-1 text-zinc-400 pointer-events-none">
-            <div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full bg-scar"></span> Conflict Origin Zone</div>
-            <div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full bg-amber-500"></span> Internal Displacement Refuge (IDP)</div>
-            <div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full bg-sky-400"></span> Cross-Border EU Destination</div>
+          <div class="hidden sm:block absolute bottom-3 left-3 bg-asphalt/90 backdrop-blur border border-white/15 p-2.5 rounded font-mono text-xs space-y-1 text-zinc-300 pointer-events-none">
+            <div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full bg-scar" aria-hidden="true"></span> Illustrative Origin Hub</div>
+            <div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full bg-amber-500" aria-hidden="true"></span> Illustrative Internal Hub (IDP)</div>
+            <div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full bg-sky-400" aria-hidden="true"></span> Illustrative External Host City</div>
           </div>
         </div>
 
         <!-- 3 Cohorts Analytical Cards -->
         <div class="grid grid-cols-1 md:grid-cols-3 gap-5 mt-6 font-mono">
-          <div class="p-5 rounded bg-void border-l-4 border-zinc-600">
-            <span class="text-[10px] text-zinc-400 uppercase tracking-widest">Cohort 01</span>
-            <h3 class="text-base font-bold text-white mt-1">Non-Displaced (NDP)</h3>
-            <p class="text-xs text-zinc-400 mt-2 leading-relaxed">
-              People who have not experienced displacement; this category does not imply that all individuals are located in active conflict zones.
+          <div class="p-5 rounded bg-void border-l-4 border-zinc-500">
+            <span class="text-xs text-zinc-400 uppercase tracking-widest">Cohort 01</span>
+            <h3 class="text-base font-bold text-white mt-1">Non-Displaced Persons (NDP)</h3>
+            <p class="text-xs text-zinc-300 mt-2 leading-relaxed">
+              Individuals residing in Ukraine who have not been forced to flee their homes; this cohort includes residents across varying regions and is not limited to active frontline zones.
             </p>
-            <div class="mt-4 pt-3 border-t border-white/10 text-xs">
-              <span class="text-zinc-500">Classification:</span>
-              <span class="text-chalk font-bold ml-1">Non-Displaced Population</span>
+            <div class="mt-4 pt-3 border-t border-white/15 text-xs">
+              <span class="text-zinc-400">Definition:</span>
+              <span class="text-chalk font-bold ml-1">Non-Displaced Residents in Ukraine</span>
             </div>
           </div>
 
           <div class="p-5 rounded bg-void border-l-4 border-amber-500">
-            <span class="text-[10px] text-zinc-400 uppercase tracking-widest">Cohort 02</span>
+            <span class="text-xs text-zinc-400 uppercase tracking-widest">Cohort 02</span>
             <h3 class="text-base font-bold text-white mt-1">Internally Displaced (IDP)</h3>
-            <p class="text-xs text-zinc-400 mt-2 leading-relaxed">
-              Severed from ancestral roots, seeking shelter in Western Ukraine (e.g. Lviv, Ivano-Frankivsk). Facing severe economic precarity and housing loss.
+            <p class="text-xs text-zinc-300 mt-2 leading-relaxed">
+              People forced to flee their homes who remain within Ukraine’s internationally recognized borders across central, northern, southern, and western oblasts.
             </p>
-            <div class="mt-4 pt-3 border-t border-white/10 text-xs">
-              <span class="text-zinc-500">Cohort Scale:</span>
-              <span class="text-amber-400 font-bold ml-1">3.7M persons (Dec 2025)</span>
+            <div class="mt-4 pt-3 border-t border-white/15 text-xs space-y-1">
+              <div>
+                <span class="text-zinc-400">Estimated IDPs within Ukraine:</span>
+                <span class="text-amber-400 font-bold ml-1">~3.7M</span>
+              </div>
+              <div class="text-[11px] text-zinc-400">Source: IOM DTM Ukraine (as of Dec 2025)</div>
             </div>
           </div>
 
           <div class="p-5 rounded bg-void border-l-4 border-scar">
-            <span class="text-[10px] text-zinc-400 uppercase tracking-widest">Cohort 03</span>
+            <span class="text-xs text-zinc-400 uppercase tracking-widest">Cohort 03</span>
             <h3 class="text-base font-bold text-white mt-1">Cross-Border Refugees</h3>
-            <p class="text-xs text-zinc-400 mt-2 leading-relaxed">
-              Crossed foreign borders to Poland, Germany, Czechia. Grappling with existential isolation, language barriers, and fragmented families.
+            <p class="text-xs text-zinc-300 mt-2 leading-relaxed">
+              People who left Ukraine due to the war and reside outside the country—primarily across European host states as well as North America and other regions worldwide.
             </p>
-            <div class="mt-4 pt-3 border-t border-white/10 text-xs">
-              <span class="text-zinc-500">UN Registered:</span>
-              <span class="text-scar font-bold ml-1">5.9M refugees (Dec 2025)</span>
+            <div class="mt-4 pt-3 border-t border-white/15 text-xs space-y-1">
+              <div>
+                <span class="text-zinc-400">Refugees from Ukraine recorded globally:</span>
+                <span class="text-scar font-bold ml-1">~5.9M</span>
+              </div>
+              <div class="text-[11px] text-zinc-400">Source: UNHCR Operational Data Portal (as of Dec 2025)</div>
             </div>
           </div>
         </div>
+
+        <!-- Accessible Text Summary & Displacement Table -->
+        <details class="mt-5 bg-void/90 border border-white/15 rounded-lg p-3.5 font-mono text-xs">
+          <summary class="cursor-pointer font-semibold text-ukryellow flex justify-between items-center">
+            <span>VIEW ACCESSIBLE TEXT SUMMARY & DISPLACEMENT COHORT TABLE</span>
+            <span aria-hidden="true">+</span>
+          </summary>
+          <div class="mt-3 space-y-3 text-zinc-300 leading-relaxed">
+            <p>
+              <strong>Map Summary:</strong> The canvas illustrates conceptual movement streams from war-affected cities (such as Kyiv, Kharkiv, and Mariupol) to domestic shelters (such as Lviv and Vinnytsia) and selected European host cities (Warsaw, Berlin, Prague). These trajectories are illustrative schematics rather than exhaustive geographic routing; refugees from Ukraine are recorded across Europe and globally.
+            </p>
+            <div class="overflow-x-auto">
+              <table class="w-full text-left border-collapse border border-white/15 text-xs">
+                <caption class="text-left text-zinc-400 pb-1.5 font-semibold">Table 2: Verified Displacement Cohort Indicators (Cutoff: December 2025)</caption>
+                <thead>
+                  <tr class="bg-asphalt text-zinc-200 border-b border-white/15">
+                    <th scope="col" class="p-2 border-r border-white/15">Population Cohort</th>
+                    <th scope="col" class="p-2 border-r border-white/15">Geographic Scope</th>
+                    <th scope="col" class="p-2 border-r border-white/15">Reported Scale</th>
+                    <th scope="col" class="p-2">Source & Cutoff Date</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr class="border-b border-white/10">
+                    <th scope="row" class="p-2 border-r border-white/15 font-normal">Non-Displaced Persons (NDP)</th>
+                    <td class="p-2 border-r border-white/15">Within Ukraine (non-displaced)</td>
+                    <td class="p-2 border-r border-white/15">Reference cohort</td>
+                    <td class="p-2">Epidemiological comparison cohort</td>
+                  </tr>
+                  <tr class="border-b border-white/10">
+                    <th scope="row" class="p-2 border-r border-white/15 font-normal">Internally Displaced Persons (IDP)</th>
+                    <td class="p-2 border-r border-white/15">Within Ukraine’s borders</td>
+                    <td class="p-2 border-r border-white/15 text-amber-400 font-bold">~3.7 million</td>
+                    <td class="p-2">IOM DTM Ukraine Report (Dec 2025)</td>
+                  </tr>
+                  <tr>
+                    <th scope="row" class="p-2 border-r border-white/15 font-normal">Refugees from Ukraine</th>
+                    <td class="p-2 border-r border-white/15">Outside Ukraine (Europe & global)</td>
+                    <td class="p-2 border-r border-white/15 text-scar font-bold">~5.9 million recorded globally</td>
+                    <td class="p-2">UNHCR Operational Data Portal (Dec 2025)</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </details>
       </div>
     </section>
 
     <!-- =====================================================================
          ACT 03: INVISIBLE WOUNDS (CLINICAL TRAUMA & RESTORED EEG OSCILLOSCOPE)
          ===================================================================== -->
-    <section id="act-03" class="scroll-mt-32">
-      <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
+    <section id="act-03" aria-labelledby="act03-heading" class="scroll-mt-32">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-center">
         <div class="lg:col-span-5 space-y-6">
-          <div class="inline-block font-mono text-scar text-xs tracking-widest uppercase">ACT 03 // CLINICAL TRAUMA ANALYSIS</div>
-          <h2 class="text-3xl md:text-5xl font-serif font-bold leading-tight">
+          <div class="inline-block font-mono text-scar text-xs font-bold tracking-widest uppercase">ACT 03 // PSYCHOLOGICAL SCREENING ANALYSIS</div>
+          <h2 id="act03-heading" class="text-3xl md:text-5xl font-serif font-bold leading-tight">
             Invisible Wounds:<br>The Steepening Psychological Fault Lines
           </h2>
-          <p class="text-zinc-400 text-sm leading-relaxed">
-            Building collapse is instantaneous and photogenic, but neuropsychological trauma operates silently. 
-            In this study, the reported proportions meeting DSM-5-based PTSD screening criteria differed across the surveyed cohorts. These screening results are not clinical diagnoses, and observed cohort differences do not establish that displacement directly causes increasing PTSD risk.
+          <p class="text-zinc-300 text-base leading-relaxed">
+            Physical destruction is immediate and visible, whereas psychological distress unfolds internally. 
+            In a nationwide online survey conducted <strong>July–August 2022</strong> (six months into the invasion; total <strong>N = 1,203</strong> adult respondents), the proportions of study respondents meeting DSM-5-based PTSD screening thresholds differed across cohorts (<a href="#ref-lushchak" class="underline decoration-ukryellow/60 hover:text-ukryellow">Lushchak et al., 2023</a>).
           </p>
 
-          <div class="p-4 rounded bg-asphalt border border-white/10 space-y-2.5 font-mono text-xs">
-            <div class="text-scar font-bold tracking-wider uppercase">Screening Criteria Proportions:</div>
-            <p class="text-zinc-400 leading-relaxed">
-              Based on nationwide assessment cohorts in <strong>Lushchak et al. (2023)</strong>, measured proportions meeting PTSD screening thresholds reflect severe psychological distress across all groups.
+          <div class="p-4 rounded bg-asphalt border border-white/15 space-y-2.5 font-mono text-xs">
+            <div class="text-scar font-bold tracking-wider uppercase">Methodological Scope & Limitations:</div>
+            <p class="text-zinc-300 leading-relaxed">
+              These figures represent the <strong>proportion of study respondents meeting DSM-5-based screening criteria</strong> (PCL-5 threshold), <strong>not clinical diagnoses</strong> and <strong>not national prevalence rates</strong> across all Ukrainians. Because the study relied on online convenience/snowball sampling (NDP n = 641; IDP n = 370; Refugees n = 192), demographic self-selection limits generalizability, and group differences do not prove direct causation.
             </p>
           </div>
 
-          <div class="text-xs font-mono text-zinc-500">
-            Source for percentages: Lushchak, O. et al. (2023). Stress, anxiety and PTSD prevalence among Ukrainians during the first year of invasion: Results of nationwide survey.
+          <div class="text-xs font-mono text-zinc-400">
+            Source: <a href="#ref-lushchak" class="underline hover:text-ukryellow">Lushchak, O. et al. (2023)</a>, <em>Frontiers in Psychiatry</em> / Precarpathian National University nationwide survey (collected July–August 2022, N = 1,203).
           </div>
         </div>
 
-        <div class="lg:col-span-7 bg-asphalt border border-white/10 rounded-xl p-6 lg:p-8 shadow-2xl space-y-6">
-          <div class="flex justify-between items-center">
-            <h4 class="font-mono text-xs text-zinc-400 uppercase tracking-widest">
-              Proportion Meeting DSM-5-Based PTSD Screening Criteria
+        <div class="lg:col-span-7 bg-asphalt border border-white/15 rounded-xl p-6 lg:p-8 shadow-2xl space-y-6">
+          <div class="flex flex-wrap justify-between items-center gap-2">
+            <h4 class="font-mono text-xs text-zinc-300 font-bold uppercase tracking-widest">
+              Study Respondents Meeting PTSD Screening Thresholds (July–Aug 2022)
             </h4>
-            <span class="font-mono text-xs text-scar bg-scar/10 px-2 py-0.5 rounded">Screening Results (Not Diagnoses)</span>
+            <span class="font-mono text-xs text-scar bg-scar/15 px-2.5 py-1 rounded border border-scar/30">Screening Thresholds (Not Clinical Diagnoses)</span>
           </div>
 
           <div class="space-y-5 font-mono text-xs">
             <!-- Non-Displaced -->
             <div>
               <div class="flex justify-between mb-1.5">
-                <span class="text-zinc-300 font-semibold">Cohort 01: Non-Displaced Persons (NDP)</span>
+                <span class="text-zinc-200 font-semibold">Cohort 01: Non-Displaced Respondents (NDP, n = 641)</span>
                 <span class="text-chalk font-bold">50.8%</span>
               </div>
-              <div class="w-full bg-void h-4 rounded-full overflow-hidden p-0.5 border border-white/10">
-                <div class="h-full bg-zinc-600 rounded-full transition-all duration-1000" style="width: 50.8%;"></div>
+              <div role="progressbar" aria-valuenow="50.8" aria-valuemin="0" aria-valuemax="100" aria-label="Non-displaced respondents meeting PTSD screening criteria: 50.8 percent" class="w-full bg-void h-4 rounded-full overflow-hidden p-0.5 border border-white/15">
+                <div class="h-full bg-zinc-500 rounded-full transition-all duration-1000" style="width: 50.8%;"></div>
               </div>
-              <span class="text-[11px] text-zinc-500 mt-1 block">Met the study’s DSM-5-based PTSD screening criteria</span>
+              <span class="text-xs text-zinc-400 mt-1 block">50.8% of NDP study respondents met DSM-5-based PTSD screening criteria</span>
             </div>
 
             <!-- IDP -->
             <div>
               <div class="flex justify-between mb-1.5">
-                <span class="text-amber-400 font-semibold">Cohort 02: Internally Displaced (IDP)</span>
+                <span class="text-amber-400 font-semibold">Cohort 02: Internally Displaced Respondents (IDP, n = 370)</span>
                 <span class="text-amber-400 font-bold">55.4%</span>
               </div>
-              <div class="w-full bg-void h-4 rounded-full overflow-hidden p-0.5 border border-white/10">
-                <div class="h-full bg-amber-600 rounded-full transition-all duration-1000" style="width: 55.4%;"></div>
+              <div role="progressbar" aria-valuenow="55.4" aria-valuemin="0" aria-valuemax="100" aria-label="Internally displaced respondents meeting PTSD screening criteria: 55.4 percent" class="w-full bg-void h-4 rounded-full overflow-hidden p-0.5 border border-white/15">
+                <div class="h-full bg-amber-500 rounded-full transition-all duration-1000" style="width: 55.4%;"></div>
               </div>
-              <span class="text-[11px] text-zinc-500 mt-1 block">Met the study’s DSM-5-based PTSD screening criteria</span>
+              <span class="text-xs text-zinc-400 mt-1 block">55.4% of IDP study respondents met DSM-5-based PTSD screening criteria</span>
             </div>
 
             <!-- Refugees -->
             <div>
               <div class="flex justify-between mb-1.5">
-                <span class="text-scar font-bold">Cohort 03: Cross-Border Refugees</span>
+                <span class="text-scar font-bold">Cohort 03: Refugee Respondents Outside Ukraine (n = 192)</span>
                 <span class="text-scar font-bold text-sm">62.2%</span>
               </div>
-              <div class="w-full bg-void h-4 rounded-full overflow-hidden p-0.5 border border-scar/30">
+              <div role="progressbar" aria-valuenow="62.2" aria-valuemin="0" aria-valuemax="100" aria-label="Refugee respondents meeting PTSD screening criteria: 62.2 percent" class="w-full bg-void h-4 rounded-full overflow-hidden p-0.5 border border-scar/40">
                 <div class="h-full bg-scar rounded-full transition-all duration-1000 shadow-lg shadow-scar/50" style="width: 62.2%;"></div>
               </div>
-              <span class="text-[11px] text-scar/80 mt-1 block">Met the study’s DSM-5-based PTSD screening criteria</span>
+              <span class="text-xs text-scar/90 mt-1 block">62.2% of refugee study respondents met DSM-5-based PTSD screening criteria</span>
             </div>
           </div>
 
           <!-- Restored EEG / Neural Trauma Waveform Canvas -->
-          <div class="pt-4 border-t border-white/10">
-            <div class="flex justify-between items-center text-[11px] font-mono mb-2">
-              <span class="text-zinc-400 flex items-center gap-1.5">
-                <span class="w-2 h-2 rounded-full bg-scar animate-ping"></span>
-                ACTIVE TRAUMA OSCILLOSCOPE (SIMULATED CHRONIC STRESS OSCILLATION)
+          <div class="pt-4 border-t border-white/15">
+            <div class="flex flex-wrap justify-between items-center text-xs font-mono mb-2 gap-1">
+              <span class="text-zinc-300 flex items-center gap-1.5">
+                <span class="w-2 h-2 rounded-full bg-scar animate-ping" aria-hidden="true"></span>
+                CONCEPTUAL STRESS OSCILLATION VISUALIZATION
               </span>
-              <span class="text-scar">DELTA/HYPER-AROUSAL</span>
+              <span class="text-scar">ARTISTIC METAPHOR (NOT BIOMETRIC DATA)</span>
             </div>
-            <div class="w-full h-24 bg-void rounded border border-white/10 overflow-hidden relative">
-              <canvas id="traumaWaveCanvas" class="w-full h-full block"></canvas>
+            <div class="w-full h-24 bg-void rounded border border-white/15 overflow-hidden relative">
+              <canvas 
+                id="traumaWaveCanvas" 
+                role="img"
+                aria-label="Animated red irregular waveform metaphorically representing chronic psychological stress and hyper-arousal."
+                class="w-full h-full block"
+              ></canvas>
             </div>
           </div>
 
-          <div class="pt-2 text-xs font-mono text-zinc-500 leading-relaxed">
-            Note: These screening metrics do not prove a direct linear cause-and-effect link between migration distance and trauma severity. Trauma trajectories involve complex overlaps of frontline combat exposure, social network fragmentation, bereavement, and post-migration socioeconomic conditions.
-          </div>
+          <!-- Accessible Screening Data Table -->
+          <details class="bg-void/90 border border-white/15 rounded-lg p-3.5 font-mono text-xs">
+            <summary class="cursor-pointer font-semibold text-ukryellow flex justify-between items-center">
+              <span>VIEW ACCESSIBLE STUDY SAMPLE & SCREENING DATA TABLE</span>
+              <span aria-hidden="true">+</span>
+            </summary>
+            <div class="mt-3 space-y-3 text-zinc-300 leading-relaxed">
+              <p>
+                <strong>Methodological Note:</strong> Data collected July–August 2022 via online survey (N = 1,203 adults; 78.6% female, mean age ~33.6 years; convenience sample). Percentages reflect positive screens on the PTSD Checklist for DSM-5 (PCL-5), not psychiatric diagnoses or general population prevalence.
+              </p>
+              <div class="overflow-x-auto">
+                <table class="w-full text-left border-collapse border border-white/15 text-xs">
+                  <caption class="text-left text-zinc-400 pb-1.5 font-semibold">Table 3: Lushchak et al. (2023) Study Respondent PTSD Screening Proportions</caption>
+                  <thead>
+                    <tr class="bg-asphalt text-zinc-200 border-b border-white/15">
+                      <th scope="col" class="p-2 border-r border-white/15">Respondent Cohort</th>
+                      <th scope="col" class="p-2 border-r border-white/15">Sample Size (n)</th>
+                      <th scope="col" class="p-2 border-r border-white/15">Met DSM-5 Screening Criteria</th>
+                      <th scope="col" class="p-2">Survey Period</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr class="border-b border-white/10">
+                      <th scope="row" class="p-2 border-r border-white/15 font-normal">Non-Displaced Persons (NDP)</th>
+                      <td class="p-2 border-r border-white/15">n = 641</td>
+                      <td class="p-2 border-r border-white/15 font-bold">50.8%</td>
+                      <td class="p-2">July–August 2022</td>
+                    </tr>
+                    <tr class="border-b border-white/10">
+                      <th scope="row" class="p-2 border-r border-white/15 font-normal">Internally Displaced Persons (IDP)</th>
+                      <td class="p-2 border-r border-white/15">n = 370</td>
+                      <td class="p-2 border-r border-white/15 text-amber-400 font-bold">55.4%</td>
+                      <td class="p-2">July–August 2022</td>
+                    </tr>
+                    <tr>
+                      <th scope="row" class="p-2 border-r border-white/15 font-normal">Cross-Border Refugees</th>
+                      <td class="p-2 border-r border-white/15">n = 192</td>
+                      <td class="p-2 border-r border-white/15 text-scar font-bold">62.2%</td>
+                      <td class="p-2">July–August 2022</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </details>
         </div>
       </div>
     </section>
@@ -468,25 +648,25 @@
     <!-- =====================================================================
          ACT 04: LIMITS OF REPAIR (VERTICAL RECONSTRUCTION VS HOLLOW FIGURE)
          ===================================================================== -->
-    <section id="act-04" class="scroll-mt-32">
+    <section id="act-04" aria-labelledby="act04-heading" class="scroll-mt-32">
       <div class="text-center max-w-3xl mx-auto mb-12">
-        <div class="inline-block font-mono text-kintsugi text-xs tracking-widest uppercase">ACT 04 // THE CORE DILEMMA</div>
-        <h2 class="text-3xl md:text-5xl font-serif font-bold leading-tight mt-2">
+        <div class="inline-block font-mono text-kintsugi text-xs font-bold tracking-widest uppercase">ACT 04 // THE CORE DILEMMA</div>
+        <h2 id="act04-heading" class="text-3xl md:text-5xl font-serif font-bold leading-tight mt-2">
           The Limits of Repair:<br>Can Rebuilt Walls Mend Broken Lives?
         </h2>
-        <p class="text-zinc-400 text-sm leading-relaxed mt-4">
-          Billions in international reconstruction funds are mobilized to rebuild concrete slabs, restore power grids, and patch apartment walls. 
-          Yet civil engineering and psychiatric recovery follow fundamentally divergent paths. 
-          Drag the reconstruction slider below to observe the visual contrast between physical rebuilding and internal psychological scars.
+        <p class="text-zinc-300 text-base leading-relaxed mt-4">
+          International reconstruction programs mobilize resources to rebuild damaged housing, schools, and civic infrastructure (<a href="#ref-rdna5" class="underline decoration-ukryellow/60 hover:text-ukryellow">World Bank et al., 2026</a>). 
+          Yet physical reconstruction and human psychological healing do not move on the same timeline. 
+          Use the conceptual visual stage slider below to contrast brick-by-brick structural rebuilding with the enduring emotional imprint of war.
         </p>
       </div>
 
-      <div class="bg-asphalt border border-white/10 rounded-2xl p-6 lg:p-10 shadow-2xl">
-        <!-- Interactive Reconstruction Slider -->
+      <div class="bg-asphalt border border-white/15 rounded-2xl p-6 lg:p-10 shadow-2xl">
+        <!-- Interactive Reconstruction Slider (Clearly Labeled as Visual Schematic Stages) -->
         <div class="max-w-xl mx-auto mb-10">
-          <div class="flex justify-between items-center font-mono text-xs mb-3">
-            <span class="text-zinc-400 uppercase tracking-wider">Civil Engineering Reconstruction Progress</span>
-            <span id="sliderValue" class="text-kintsugi font-bold text-sm">0% (Wartime Ruins)</span>
+          <div class="flex flex-wrap justify-between items-center font-mono text-xs mb-3 gap-2">
+            <label for="repairSlider" class="text-zinc-300 font-semibold uppercase tracking-wider">Conceptual Visual Stage Indicator</label>
+            <span id="sliderValue" aria-live="polite" class="text-kintsugi font-bold text-sm">Stage 0% (Visual Schematic: Ruins)</span>
           </div>
           <input 
             type="range" 
@@ -494,119 +674,173 @@
             min="0" 
             max="100" 
             value="0" 
-            class="w-full h-2.5 bg-void rounded appearance-none cursor-pointer accent-kintsugi focus:outline-none"
+            aria-valuetext="Stage 0 percent: Visual schematic of wartime ruins"
+            class="w-full h-3 bg-void rounded appearance-none cursor-pointer accent-kintsugi"
           >
-          <div class="flex justify-between text-[10px] font-mono text-zinc-500 mt-2">
-            <span>0% War Ruins</span>
-            <span>50% Masonry Infill</span>
-            <span>100% Fully Restored (Kintsugi)</span>
+          <div class="flex justify-between text-xs font-mono text-zinc-400 mt-2">
+            <span>Stage 0%: Ruins</span>
+            <span>Stage 50%: Partial Masonry</span>
+            <span>Stage 100%: Facade Rebuilt</span>
           </div>
+          <p class="text-xs font-mono text-zinc-400 text-center mt-2">
+            Note: Percentages represent visual schematic stages only—not an engineering safety rating or psychological recovery scale.
+          </p>
         </div>
 
         <!-- Dual Domain Split Screen -->
         <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-stretch">
           
-          <!-- Column A: Vertical Architecture Building (Matching Act 1 style) -->
-          <div class="bg-void p-6 rounded-xl border border-white/10 flex flex-col justify-between">
+          <!-- Column A: Vertical Architecture Building -->
+          <div class="bg-void p-6 rounded-xl border border-white/15 flex flex-col justify-between">
             <div>
-              <div class="flex justify-between items-center font-mono text-xs mb-3 pb-2 border-b border-white/10">
+              <div class="flex justify-between items-center font-mono text-xs mb-3 pb-2 border-b border-white/15">
                 <div class="flex items-center space-x-2">
-                  <!-- Clean Architecture Building Icon -->
-                  <svg class="w-4 h-4 text-kintsugi" viewBox="0 0 24 24" fill="currentColor">
+                  <svg class="w-4 h-4 text-kintsugi" aria-hidden="true" viewBox="0 0 24 24" fill="currentColor">
                     <path d="M19 2H5c-1.1 0-2 .9-2 2v17h18V4c0-1.1-.9-2-2-2zm-7 2h2v2h-2V4zm0 4h2v2h-2V8zm0 4h2v2h-2v-2zm-4-8h2v2H8V4zm0 4h2v2H8V8zm0 4h2v2H8v-2zm-4-8h2v2H4V4zm0 4h2v2H4V8zm0 4h2v2H4v-2zm14 8H4v-2h16v2zm0-4h-2v-2h2v2zm0-4h-2V8h2v2zm0-4h-2V4h2v2z"/>
                   </svg>
                   <span class="text-zinc-200 font-bold uppercase tracking-wider">1. Structural Domain</span>
                 </div>
-                <span id="physicalStatus" class="text-scar text-[11px] font-mono">CRITICAL DESTABILIZATION</span>
+                <span id="physicalStatus" class="text-scar text-xs font-mono">STAGE: UNREPAIRED RUBBLE</span>
               </div>
-              <p class="text-xs text-zinc-400 mb-6 leading-relaxed">
-              Bricks, concrete masonry, and shattered floor slabs can be repoured, stabilized, and cosmetically joined with golden Kintsugi seams. Safety standards can reach 100%.
-            </p>
-          </div>
-
-          <!-- Vertical Multi-Story Building Canvas (Strict Act 1 Grey-Blue Architecture) -->
-          <div class="relative w-full aspect-[4/5] bg-asphalt rounded border border-white/10 overflow-hidden flex items-center justify-center">
-            <canvas id="repairBuildingCanvas" class="w-full h-full block"></canvas>
-          </div>
-
-          <div class="mt-4 pt-3 border-t border-white/10 text-xs font-mono text-zinc-400 flex justify-between">
-            <span>Restoration Feasibility:</span>
-            <span id="physicalScore" class="text-zinc-300 font-bold">Concrete Re-anchoring Achievable</span>
-          </div>
-        </div>
-
-        <!-- Column B: Hollow Figure & Trauma Void (Solid Pictogram Silhouette) -->
-        <div class="bg-void p-6 rounded-xl border border-scar/30 flex flex-col justify-between relative overflow-hidden">
-          <div class="absolute -right-12 -top-12 w-28 h-28 bg-scar/10 rounded-full blur-2xl"></div>
-
-          <div>
-            <div class="flex justify-between items-center font-mono text-xs mb-3 pb-2 border-b border-scar/20">
-              <div class="flex items-center space-x-2">
-                <!-- Clean Psychology / Human Core Icon -->
-                <svg class="w-4 h-4 text-scar" viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z"/>
-                </svg>
-                <span class="text-scar font-bold uppercase tracking-wider">2. Psychological Domain</span>
-              </div>
-              <span id="mentalStatus" class="text-scar text-[11px] font-mono">PERSISTENT TRAUMA SCARS</span>
+              <p class="text-sm text-zinc-300 mb-6 leading-relaxed">
+                Damaged masonry, concrete slabs, and exterior walls can be rebuilt course by course and sealed with visible golden Kintsugi joints, restoring physical shelter over time.
+              </p>
             </div>
-            <p class="text-xs text-zinc-400 mb-6 leading-relaxed">
-              The effects of trauma, including acute stress and bereavement, may persist over years. Even when outer walls are fully restored, internal scars remain; therapy and social support can help people heal.
-            </p>
+
+            <!-- Vertical Multi-Story Building Canvas -->
+            <div class="relative w-full aspect-[4/5] bg-asphalt rounded border border-white/15 overflow-hidden flex items-center justify-center">
+              <canvas 
+                id="repairBuildingCanvas" 
+                role="img"
+                aria-label="Visual schematic of a multi-story building being reconstructed brick by brick from ground rubble up to a completed facade with golden Kintsugi seams."
+                class="w-full h-full block"
+              ></canvas>
+            </div>
+
+            <div class="mt-4 pt-3 border-t border-white/15 text-xs font-mono text-zinc-300 flex flex-wrap justify-between gap-1">
+              <span>Visual Metaphor:</span>
+              <span id="physicalScore" class="text-zinc-200 font-bold">Sequential Masonry Reconstruction</span>
+            </div>
           </div>
 
-          <!-- Solid Silhouette Figure with Cutout Heart Canvas -->
-          <div class="relative w-full aspect-[4/5] bg-asphalt rounded border border-scar/20 overflow-hidden flex items-center justify-center p-4">
-            <canvas id="figureCanvas" class="w-full h-full block"></canvas>
+          <!-- Column B: Hollow Figure & Trauma Void -->
+          <div class="bg-void p-6 rounded-xl border border-scar/40 flex flex-col justify-between relative overflow-hidden">
+            <div aria-hidden="true" class="absolute -right-12 -top-12 w-28 h-28 bg-scar/10 rounded-full blur-2xl"></div>
+
+            <div>
+              <div class="flex justify-between items-center font-mono text-xs mb-3 pb-2 border-b border-scar/30">
+                <div class="flex items-center space-x-2">
+                  <svg class="w-4 h-4 text-scar" aria-hidden="true" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z"/>
+                  </svg>
+                  <span class="text-scar font-bold uppercase tracking-wider">2. Psychological Domain</span>
+                </div>
+                <span id="mentalStatus" class="text-scar text-xs font-mono">LONG-TERM EMOTIONAL IMPRINT</span>
+              </div>
+              <p class="text-sm text-zinc-300 mb-6 leading-relaxed">
+                Why <strong>IRREVERSIBLE</strong>: War can leave deep, long-lasting psychological wounds that do not automatically vanish when buildings are repaired. While scars may endure for years, evidence-based clinical therapy and social support can meaningfully help individuals heal.
+              </p>
+            </div>
+
+            <!-- Solid Silhouette Figure with Cutout Heart Canvas -->
+            <div class="relative w-full aspect-[4/5] bg-asphalt rounded border border-scar/30 overflow-hidden flex items-center justify-center p-4">
+              <canvas 
+                id="figureCanvas" 
+                role="img"
+                aria-label="Solid human silhouette pictogram with a carved-out heart void in the chest and glowing red fracture lines, symbolizing lasting emotional wounds that persist even as physical buildings are rebuilt."
+                class="w-full h-full block"
+              ></canvas>
+            </div>
+
+            <div class="mt-4 pt-3 border-t border-white/15 text-xs font-mono text-zinc-300 flex flex-wrap justify-between gap-1">
+              <span>Recovery Outlook:</span>
+              <span class="text-scar font-bold">Scars May Persist; Care Aids Healing</span>
+            </div>
           </div>
 
-          <div class="mt-4 pt-3 border-t border-white/10 text-xs font-mono text-zinc-400 flex justify-between">
-            <span>Psychological Timeline:</span>
-            <span class="text-scar font-bold">Persistent / Improved with Support</span>
-          </div>
         </div>
 
+        <!-- Accessible Narrative & Comparison Table for Act 04 -->
+        <details class="mt-8 bg-void/90 border border-white/15 rounded-lg p-3.5 font-mono text-xs">
+          <summary class="cursor-pointer font-semibold text-kintsugi flex justify-between items-center">
+            <span>VIEW ACCESSIBLE SUMMARY OF ACT 04 VISUAL METAPHOR</span>
+            <span aria-hidden="true">+</span>
+          </summary>
+          <div class="mt-3 space-y-3 text-zinc-300 leading-relaxed">
+            <p>
+              <strong>Core Synthesis:</strong> Moving the slider from Stage 0% to Stage 100% lays bricks upward until the residential building facade is visually restored with golden Kintsugi seams. Beside it, the solid human pictogram retains a hollowed heart outline with red fracture lines—illustrating that while physical spaces can be reconstructed, psychological wounds often persist long after ceasefire or rebuilding, though clinical care and community support can foster recovery.
+            </p>
+          </div>
+        </details>
+
+        <blockquote class="mt-8 p-5 bg-void border-l-4 border-ukryellow font-serif text-base sm:text-lg text-white leading-relaxed">
+          “IRREVERSIBLE does not mean recovery is impossible—it means war leaves a permanent mark on human lives that concrete alone cannot erase. With sustained care and social support, survivors can rebuild meaning alongside their cities.”
+        </blockquote>
       </div>
     </section>
 
   </main>
 
   <!-- Footnote & Scholarly References -->
-  <footer class="bg-asphalt border-t border-white/10 py-16 px-6 relative z-10 font-mono text-xs text-zinc-400">
+  <footer id="references" aria-labelledby="references-heading" class="bg-asphalt border-t border-white/15 py-16 px-5 sm:px-6 relative z-10 font-mono text-xs text-zinc-300">
     <div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-12 gap-10">
       
       <div class="md:col-span-4 space-y-3">
         <h4 class="font-serif text-lg text-white font-bold">IRREVERSIBLE</h4>
-        <p class="text-zinc-500 leading-relaxed text-[11px]">
-          Investigating structural devastation and psychological trauma through rigorous data storytelling.
+        <p class="text-zinc-400 leading-relaxed text-xs">
+          Investigating structural devastation and psychological trauma in Ukraine through transparent data storytelling.
         </p>
         <div class="pt-2">
-          <span class="text-zinc-500 block text-[10px] uppercase tracking-wider">Research & Design Team:</span>
+          <span class="text-zinc-400 block text-[11px] uppercase tracking-wider">Research & Design Team:</span>
           <span class="text-chalk font-semibold">Chou, Yun-Hsin · Lai, Yi-Hsun · Huang, Yu-Chieh</span>
         </div>
         <div>
-          <span class="text-zinc-500 block text-[10px] uppercase tracking-wider">Curriculum & Scope:</span>
-          <span class="text-chalk">Communication Design / Progress Report Stage I</span>
+          <span class="text-zinc-400 block text-[11px] uppercase tracking-wider">Project Context:</span>
+          <span class="text-chalk">Communication Design / Progress Report</span>
         </div>
       </div>
 
       <div class="md:col-span-8 space-y-3">
-        <h5 class="text-zinc-300 font-bold uppercase tracking-wider text-xs">Scholarly References & Institutional Surveys</h5>
-        <ul class="space-y-1.5 text-[11px] text-zinc-500 leading-relaxed">
-          <li>• <span class="text-zinc-300">World Bank, EU, UN, & Govt of Ukraine (Feb 2026)</span>: <em>Ukraine Rapid Damage and Needs Assessment (RDNA5)</em>. Housing damage cut-off 2025-12-31.</li>
-          <li>• <span class="text-zinc-300">World Bank (May 2024)</span>: Technical assessment of 3,798 damaged educational institutions (365 destroyed).</li>
-          <li>• <span class="text-zinc-300">UNHCR (Dec 2025)</span>: Operational data portal on Ukraine refugee displacement and internal movement.</li>
-          <li>• <span class="text-zinc-300">UNICEF (2025)</span>: Humanitarian situation report on child education facilities and psychological interventions.</li>
-          <li>• <span class="text-zinc-300">Lisovyi, O. M. et al. (2022)</span>: Survey, assessment of technical condition and suitability for further operation of residential building at Lobanovsky Ave 6-A, Kyiv. <em>Science & Construction</em>.</li>
-          <li>• <span class="text-zinc-300">Lushchak, O. et al. (2023)</span>: Stress, anxiety and PTSD prevalence among Ukrainians during first year of invasion: Results of nationwide survey. Precarpathian National University.</li>
+        <h5 id="references-heading" class="text-zinc-200 font-bold uppercase tracking-wider text-xs">Verifiable Sources & Primary Data Citations</h5>
+        <ul class="space-y-2.5 text-xs text-zinc-300 leading-relaxed">
+          <li id="ref-rdna5">
+            • <span class="text-white font-semibold">World Bank, Government of Ukraine, European Union, &amp; United Nations (February 2026)</span>: 
+            <em>Ukraine Fifth Rapid Damage and Needs Assessment (RDNA5): February 2022 – December 2025</em> (Data cutoff: 2025-12-31; Housing Sector Overview: ~14% of total housing stock damaged or destroyed, affecting over 3 million households). 
+            <a href="https://documents.worldbank.org/" target="_blank" rel="noopener noreferrer" class="text-ukryellow underline hover:text-white">[World Bank Documents Portal ↗]</a>
+          </li>
+          <li id="ref-moes">
+            • <span class="text-white font-semibold">Ministry of Education and Science of Ukraine (MoES) / Save Schools Database (Data as of February 2024)</span>: 
+            Official national tracking of damaged and destroyed educational institutions (3,798 educational facilities damaged, including 365 completely destroyed; cited in World Bank/GoU/EU/UN <em>RDNA3</em>, Education Sector chapter). 
+            <a href="https://saveschools.in.ua/en/" target="_blank" rel="noopener noreferrer" class="text-ukryellow underline hover:text-white">[MoES Save Schools Portal ↗]</a>
+          </li>
+          <li id="ref-iom">
+            • <span class="text-white font-semibold">International Organization for Migration (IOM) (December 2025)</span>: 
+            <em>Ukraine — Internal Displacement Report: General Population Survey (DTM)</em> (Data cutoff: December 2025; estimated ~3.7 million internally displaced persons within Ukraine). 
+            <a href="https://dtm.iom.int/ukraine" target="_blank" rel="noopener noreferrer" class="text-ukryellow underline hover:text-white">[IOM DTM Ukraine Portal ↗]</a>
+          </li>
+          <li id="ref-unhcr">
+            • <span class="text-white font-semibold">United Nations High Commissioner for Refugees (UNHCR) (December 2025)</span>: 
+            <em>Ukraine Refugee Situation — Operational Data Portal</em> (Data cutoff: December 2025; ~5.9 million refugees from Ukraine recorded globally across Europe and beyond). 
+            <a href="https://data.unhcr.org/en/situations/ukraine" target="_blank" rel="noopener noreferrer" class="text-ukryellow underline hover:text-white">[UNHCR Ukraine Situation Portal ↗]</a>
+          </li>
+          <li id="ref-lushchak">
+            • <span class="text-white font-semibold">Lushchak, O., Velykodna, M., Bolman, S., Strilbytska, O., Berezovskyi, V., &amp; Storey, K. B. (2023)</span>: 
+            “Prevalence of stress, anxiety, and symptoms of post-traumatic stress disorder among Ukrainians after the first year of Russian invasion: a nationwide cross-sectional study.” <em>The Lancet Regional Health – Europe</em> / Precarpathian National University survey (Data collected July–August 2022; N = 1,203 adult respondents; PCL-5 screening thresholds met by 50.8% of NDP [n=641], 55.4% of IDP [n=370], and 62.2% of refugees [n=192]). 
+            <a href="https://doi.org/10.1016/j.lanepe.2023.100773" target="_blank" rel="noopener noreferrer" class="text-ukryellow underline hover:text-white">[DOI: 10.1016/j.lanepe.2023.100773 ↗]</a>
+          </li>
+          <li id="ref-lisovyi">
+            • <span class="text-white font-semibold">Lisovyi, O. M., Mar’ienkov, M. H., &amp; Liubchenko, I. H. (2022)</span>: 
+            “Survey, assessment of technical condition and suitability for further operation of the residential building at V. Lobanovsky Avenue, 6-A, Kyiv, which was damaged due to military activities.” <em>Science &amp; Construction</em>, 34(3–4), pp. 54–68. 
+            <a href="https://doi.org/10.33644/2313-6679-34-2022-6" target="_blank" rel="noopener noreferrer" class="text-ukryellow underline hover:text-white">[DOI: 10.33644/2313-6679-34-2022-6 ↗]</a>
+          </li>
         </ul>
       </div>
 
     </div>
 
-    <div class="max-w-6xl mx-auto mt-12 pt-6 border-t border-white/5 flex flex-col sm:flex-row justify-between items-center text-[10px] text-zinc-600">
-      <span>© 2026 IRREVERSIBLE Project. Open Academic & Public Interest Data Journalism.</span>
-      <span class="mt-2 sm:mt-0">Inspired by The Pudding Scrollytelling Architecture</span>
+    <div class="max-w-6xl mx-auto mt-12 pt-6 border-t border-white/10 flex flex-col sm:flex-row justify-between items-center text-xs text-zinc-400">
+      <span>© 2026 IRREVERSIBLE Project. Academic &amp; Public Interest Data Journalism.</span>
+      <span class="mt-2 sm:mt-0">Accessible Scrollytelling Architecture</span>
     </div>
   </footer>
 
@@ -638,9 +872,9 @@
     function toggleAudio() {
       initAudioContext();
       isAudioActive = !isAudioActive;
+      audioToggleBtn.setAttribute('aria-pressed', String(isAudioActive));
 
       if (isAudioActive) {
-        // Start subtle low rumble ambient drone
         ambientDrone = audioCtx.createOscillator();
         const droneFilter = audioCtx.createBiquadFilter();
         droneGain = audioCtx.createGain();
@@ -660,7 +894,7 @@
         ambientDrone.start();
 
         audioToggleBtn.classList.add('border-scar', 'text-scar');
-        audioText.innerText = "SOUNDSCAPE: ACTIVE";
+        audioText.innerText = "AUDIO: ON";
         audioIcon.innerText = "🔊";
         playDistantArtilleryRumble();
       } else {
@@ -671,7 +905,7 @@
           }, 300);
         }
         audioToggleBtn.classList.remove('border-scar', 'text-scar');
-        audioText.innerText = "SOUNDSCAPE: OFF";
+        audioText.innerText = "AUDIO: OFF";
         audioIcon.innerText = "🔇";
       }
     }
@@ -682,7 +916,6 @@
 
       const now = audioCtx.currentTime;
 
-      // Layer 1: Low-Pass Filtered White Noise (Shockwave air rumble)
       const bufferSize = audioCtx.sampleRate * 1.5;
       const noiseBuffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
       const output = noiseBuffer.getChannelData(0);
@@ -707,7 +940,6 @@
       noiseGain.connect(audioCtx.destination);
       whiteNoise.start(now);
 
-      // Layer 2: Sub-bass Earth Resonance (Heavy muffled boom)
       const subOsc = audioCtx.createOscillator();
       const subGain = audioCtx.createGain();
       subOsc.type = 'sine';
@@ -812,7 +1044,7 @@
     }
 
     window.addEventListener('click', (e) => {
-      if (['BUTTON', 'A', 'INPUT', 'CANVAS'].includes(e.target.tagName)) return;
+      if (['BUTTON', 'A', 'INPUT', 'CANVAS', 'SUMMARY'].includes(e.target.tagName)) return;
       addExplosionFissure(e.clientX, e.clientY);
     });
 
@@ -830,7 +1062,7 @@
     loopCracks();
 
     /* =====================================================================
-       3. ACT 01: ARCHITECTURAL COLLAPSE LAB (COOL GREY-BLUE INTERIORS)
+       3. ACT 01: CONCEPTUAL ARCHITECTURAL COLLAPSE ILLUSTRATION
        ===================================================================== */
     const bCanvas = document.getElementById('buildingSimCanvas');
     const bCtx = bCanvas.getContext('2d');
@@ -852,14 +1084,14 @@
     let debrisParticles = [];
     let smokeParticles = [];
     let totalIntegrity = 100.0;
-    let accumulatedDebrisTonnes = 0;
+    let accumulatedDebrisUnits = 0;
 
     function initBuilding() {
       slabs = [];
       debrisParticles = [];
       smokeParticles = [];
       totalIntegrity = 100.0;
-      accumulatedDebrisTonnes = 0;
+      accumulatedDebrisUnits = 0;
 
       const padX = bW * 0.22;
       const bWidth = bW * 0.56;
@@ -903,7 +1135,7 @@
         integrityMeter.className = "text-scar font-bold animate-pulse";
       }
 
-      debrisMeter.innerText = `${Math.round(accumulatedDebrisTonnes).toLocaleString()} T`;
+      debrisMeter.innerText = `${Math.round(accumulatedDebrisUnits).toLocaleString()} UNITS`;
     }
 
     function applyImpact(targetX, targetY, blastPower = 90) {
@@ -936,7 +1168,7 @@
           });
 
           const debrisCount = Math.floor(dmg / 4);
-          accumulatedDebrisTonnes += dmg * 120;
+          accumulatedDebrisUnits += debrisCount;
 
           for (let k = 0; k < debrisCount; k++) {
             debrisParticles.push({
@@ -992,6 +1224,14 @@
       applyImpact(clickX, clickY, 95);
     });
 
+    // Keyboard accessibility for Building Canvas
+    bCanvas.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        applyImpact(bW * (0.35 + Math.random() * 0.3), bH * (0.25 + Math.random() * 0.5), 95);
+      }
+    });
+
     document.getElementById('btnImpactUpper').addEventListener('click', () => applyImpact(bW * 0.5, bH * 0.25, 95));
     document.getElementById('btnImpactCore').addEventListener('click', () => applyImpact(bW * 0.48, bH * 0.52, 100));
     document.getElementById('btnImpactBase').addEventListener('click', () => applyImpact(bW * 0.5, bH * 0.85, 120));
@@ -1028,7 +1268,6 @@
         bCtx.strokeRect(-s.w / 2 + 2, -s.h / 2 + 2, s.w - 4, s.h - 4);
 
         if (!s.destroyed) {
-          // Cool Grey-Blue Windows
           const winAlpha = (s.health / 100) * 0.45 + 0.15;
           bCtx.fillStyle = s.health < 50 ? `rgba(230, 57, 70, ${winAlpha})` : `rgba(74, 114, 158, ${winAlpha})`;
           bCtx.fillRect(-s.w / 2 + 8, -s.h / 2 + 8, s.w * 0.35, s.h * 0.45);
@@ -1096,7 +1335,7 @@
     renderBuildingSim();
 
     /* =====================================================================
-       4. ACT 02: CARTOGRAPHIC DISPLACEMENT STREAM MAP
+       4. ACT 02: ILLUSTRATIVE DISPLACEMENT STREAM MAP
        ===================================================================== */
     const mMapCanvas = document.getElementById('migrationMapCanvas');
     const mCtx = mMapCanvas.getContext('2d');
@@ -1110,14 +1349,14 @@
     resizeMapCanvas();
 
     const mapNodes = [
-      { id: 'mariupol', name: 'Mariupol', x: 0.72, y: 0.70, type: 'origin', desc: 'Direct siege & frontline conflict hub', metric: 'Frontline displacement zone' },
-      { id: 'kharkiv', name: 'Kharkiv', x: 0.70, y: 0.42, type: 'origin', desc: 'Sustained artillery shelling corridor', metric: 'Continuous bombardment hub' },
-      { id: 'kyiv', name: 'Kyiv', x: 0.56, y: 0.40, type: 'origin', desc: 'Capital epicenter & initial northern axis', metric: 'Major population center' },
-      { id: 'lviv', name: 'Lviv', x: 0.42, y: 0.48, type: 'idp', desc: 'Primary domestic IDP sanctuary', metric: 'Major shelter hub (IDP)' },
-      { id: 'vinnytsia', name: 'Vinnytsia', x: 0.48, y: 0.58, type: 'idp', desc: 'Central transit relocation camp', metric: 'Transit refuge hub' },
-      { id: 'warsaw', name: 'Poland (Warsaw)', x: 0.32, y: 0.35, type: 'refugee', desc: 'Leading cross-border host nation', metric: 'Key EU registration haven' },
-      { id: 'berlin', name: 'Germany (Berlin)', x: 0.16, y: 0.30, type: 'refugee', desc: 'Major long-term integration sanctuary', metric: 'Key cross-border recipient' },
-      { id: 'prague', name: 'Czechia (Prague)', x: 0.20, y: 0.48, type: 'refugee', desc: 'High per-capita intake hub', metric: 'Registered refugee haven' }
+      { id: 'mariupol', name: 'Mariupol (Illustrative)', x: 0.72, y: 0.70, type: 'origin', desc: 'Illustrative conflict origin node', metric: 'Conceptual trajectory origin' },
+      { id: 'kharkiv', name: 'Kharkiv (Illustrative)', x: 0.70, y: 0.42, type: 'origin', desc: 'Illustrative conflict origin node', metric: 'Conceptual trajectory origin' },
+      { id: 'kyiv', name: 'Kyiv (Illustrative)', x: 0.56, y: 0.40, type: 'origin', desc: 'Illustrative urban origin node', metric: 'Conceptual trajectory origin' },
+      { id: 'lviv', name: 'Lviv (Illustrative)', x: 0.42, y: 0.48, type: 'idp', desc: 'Illustrative domestic IDP hub', metric: 'Part of ~3.7M IDPs in Ukraine (IOM, Dec 2025)' },
+      { id: 'vinnytsia', name: 'Vinnytsia (Illustrative)', x: 0.48, y: 0.58, type: 'idp', desc: 'Illustrative central IDP hub', metric: 'Part of ~3.7M IDPs in Ukraine (IOM, Dec 2025)' },
+      { id: 'warsaw', name: 'Warsaw (Illustrative)', x: 0.32, y: 0.35, type: 'refugee', desc: 'Illustrative external host city', metric: 'Part of ~5.9M refugees globally (UNHCR, Dec 2025)' },
+      { id: 'berlin', name: 'Berlin (Illustrative)', x: 0.16, y: 0.30, type: 'refugee', desc: 'Illustrative external host city', metric: 'Part of ~5.9M refugees globally (UNHCR, Dec 2025)' },
+      { id: 'prague', name: 'Prague (Illustrative)', x: 0.20, y: 0.48, type: 'refugee', desc: 'Illustrative external host city', metric: 'Part of ~5.9M refugees globally (UNHCR, Dec 2025)' }
     ];
 
     const migrationPaths = [
@@ -1181,18 +1420,17 @@
     let ndpParticles = [];
     for (let i = 0; i < 50; i++) {
       ndpParticles.push({
-        x: (0.60 + Math.random() * 0.22) * mW,
-        y: (0.40 + Math.random() * 0.30) * mH,
-        vx: (Math.random() - 0.5) * 0.4,
-        vy: (Math.random() - 0.5) * 0.4
+        x: (0.44 + Math.random() * 0.34) * mW,
+        y: (0.38 + Math.random() * 0.32) * mH,
+        vx: (Math.random() - 0.5) * 0.35,
+        vy: (Math.random() - 0.5) * 0.35
       });
     }
 
     function renderMap() {
       mCtx.clearRect(0, 0, mW, mH);
 
-      // Stylized territorial borders
-      mCtx.strokeStyle = 'rgba(255, 255, 255, 0.08)';
+      mCtx.strokeStyle = 'rgba(255, 255, 255, 0.1)';
       mCtx.lineWidth = 1;
 
       mCtx.beginPath();
@@ -1204,12 +1442,12 @@
       mCtx.lineTo(mW * 0.46, mH * 0.75);
       mCtx.lineTo(mW * 0.38, mH * 0.52);
       mCtx.closePath();
-      mCtx.fillStyle = 'rgba(255, 255, 255, 0.02)';
+      mCtx.fillStyle = 'rgba(255, 255, 255, 0.025)';
       mCtx.fill();
       mCtx.stroke();
 
       mCtx.font = '10px "JetBrains Mono"';
-      mCtx.fillStyle = 'rgba(255, 255, 255, 0.2)';
+      mCtx.fillStyle = 'rgba(255, 255, 255, 0.25)';
       mCtx.fillText('UKRAINE', mW * 0.58, mH * 0.55);
       mCtx.fillText('POLAND', mW * 0.30, mH * 0.42);
       mCtx.fillText('GERMANY', mW * 0.14, mH * 0.38);
@@ -1231,7 +1469,7 @@
         mCtx.beginPath();
         mCtx.moveTo(x1, y1);
         mCtx.quadraticCurveTo(midX, midY, x2, y2);
-        mCtx.strokeStyle = p.cohort === 'REF' ? 'rgba(230, 57, 70, 0.2)' : 'rgba(217, 119, 6, 0.2)';
+        mCtx.strokeStyle = p.cohort === 'REF' ? 'rgba(230, 57, 70, 0.25)' : 'rgba(217, 119, 6, 0.25)';
         mCtx.lineWidth = 1.2;
         mCtx.stroke();
       });
@@ -1245,12 +1483,12 @@
         ndpParticles.forEach(p => {
           p.x += p.vx;
           p.y += p.vy;
-          if (p.x < mW * 0.58 || p.x > mW * 0.82) p.vx *= -1;
-          if (p.y < mH * 0.38 || p.y > mH * 0.72) p.vy *= -1;
+          if (p.x < mW * 0.42 || p.x > mW * 0.80) p.vx *= -1;
+          if (p.y < mH * 0.36 || p.y > mH * 0.72) p.vy *= -1;
 
           mCtx.beginPath();
           mCtx.arc(p.x, p.y, 1.8, 0, Math.PI * 2);
-          mCtx.fillStyle = 'rgba(160, 160, 160, 0.7)';
+          mCtx.fillStyle = 'rgba(180, 185, 195, 0.7)';
           mCtx.fill();
         });
       }
@@ -1268,7 +1506,7 @@
 
         mCtx.font = '11px "JetBrains Mono"';
         mCtx.fillStyle = '#eaebee';
-        mCtx.fillText(node.name, nx + 10, ny + 4);
+        mCtx.fillText(node.name.replace(' (Illustrative)', ''), nx + 10, ny + 4);
       });
 
       requestAnimationFrame(renderMap);
@@ -1280,10 +1518,12 @@
       btn.addEventListener('click', function() {
         mapFilters.forEach(b => {
           b.classList.remove('bg-scar', 'text-white', 'font-bold');
-          b.classList.add('bg-void', 'text-zinc-400');
+          b.classList.add('bg-void', 'text-zinc-200');
+          b.setAttribute('aria-pressed', 'false');
         });
         this.classList.add('bg-scar', 'text-white', 'font-bold');
-        this.classList.remove('bg-void', 'text-zinc-400');
+        this.classList.remove('bg-void', 'text-zinc-200');
+        this.setAttribute('aria-pressed', 'true');
 
         if (this.id === 'mapFilterAll') currentMapFilter = 'ALL';
         if (this.id === 'mapFilterNDP') currentMapFilter = 'NDP';
@@ -1317,8 +1557,8 @@
         tooltipStatus.className = found.type === 'origin' ? 'text-scar' : (found.type === 'idp' ? 'text-amber-400' : 'text-sky-400');
         tooltipMetric.innerText = found.metric;
 
-        mapTooltip.style.left = `${mouseX + 15}px`;
-        mapTooltip.style.top = `${mouseY + 15}px`;
+        mapTooltip.style.left = `${Math.min(rect.width - 230, mouseX + 15)}px`;
+        mapTooltip.style.top = `${Math.min(rect.height - 90, mouseY + 15)}px`;
         mapTooltip.classList.remove('hidden');
       } else {
         mapTooltip.classList.add('hidden');
@@ -1345,22 +1585,19 @@
     function renderTraumaWave() {
       wCtx.clearRect(0, 0, wW, wH);
 
-      // Grid line
-      wCtx.strokeStyle = 'rgba(255, 255, 255, 0.05)';
+      wCtx.strokeStyle = 'rgba(255, 255, 255, 0.08)';
       wCtx.lineWidth = 1;
       wCtx.beginPath();
       wCtx.moveTo(0, wH / 2);
       wCtx.lineTo(wW, wH / 2);
       wCtx.stroke();
 
-      // Draw irregular stress waveform
       wCtx.beginPath();
       wCtx.lineWidth = 1.8;
       wCtx.strokeStyle = '#e63946';
 
       for (let x = 0; x < wW; x++) {
         const rad = (x * 0.04) + wavePhase;
-        // Superposition of irregular high-frequency spike and low delta swell
         const delta = Math.sin(rad * 0.6) * 16;
         const spike = Math.sin(rad * 3.5) * (Math.sin(rad * 1.3) > 0.4 ? 18 : 3);
         const noise = (Math.sin(x * 0.8 + wavePhase * 4) * 4);
@@ -1377,19 +1614,17 @@
     renderTraumaWave();
 
     /* =====================================================================
-       6. ACT 04: LIMITS OF REPAIR (BRICK-BY-BRICK STACKING & CLEAN SOLID PICTOGRAM)
+       6. ACT 04: LIMITS OF REPAIR (BRICK-BY-BRICK STACKING & SOLID PICTOGRAM)
        ===================================================================== */
     const repairSlider = document.getElementById('repairSlider');
     const sliderValue = document.getElementById('sliderValue');
     const physicalStatus = document.getElementById('physicalStatus');
     const mentalStatus = document.getElementById('mentalStatus');
 
-    // Canvas 1: Vertical Building Repair (Stacked brick-by-brick from ground up)
     const rbCanvas = document.getElementById('repairBuildingCanvas');
     const rbCtx = rbCanvas.getContext('2d');
     let rbW, rbH;
 
-    // Canvas 2: Solid Pictogram with Cutout Heart Void
     const figCanvas = document.getElementById('figureCanvas');
     const fCtx = figCanvas.getContext('2d');
     let fW, fH;
@@ -1403,7 +1638,6 @@
     window.addEventListener('resize', resizeRepairCanvases);
     resizeRepairCanvases();
 
-    // Procedural Layer-by-Layer Masonry Reconstruction (Ground Up)
     function renderVerticalBuildingRepair(progress) {
       rbCtx.clearRect(0, 0, rbW, rbH);
 
@@ -1417,15 +1651,13 @@
       const brickW = bWidth / brickCols;
       const brickH = fHeight / brickRowsPerFloor;
 
-      // Ground Base Line & Rubble Foundation
-      rbCtx.strokeStyle = '#2d3748';
+      rbCtx.strokeStyle = '#3a455c';
       rbCtx.lineWidth = 2.5;
       rbCtx.beginPath();
       rbCtx.moveTo(rbW * 0.08, groundY);
       rbCtx.lineTo(rbW * 0.92, groundY);
       rbCtx.stroke();
 
-      // At lower progress, render piles of war rubble on ground
       const rubbleFactor = Math.max(0, 1 - (progress / 60));
       if (rubbleFactor > 0.01) {
         rbCtx.fillStyle = '#4a5568';
@@ -1439,11 +1671,9 @@
         }
       }
 
-      // Calculate total discrete brick courses across all floors
       const totalCourses = totalFloors * brickRowsPerFloor;
       const currentBuiltCourses = (progress / 100) * totalCourses;
 
-      // Render masonry brick-by-brick from ground up
       for (let course = 0; course < totalCourses; course++) {
         if (course > currentBuiltCourses) break;
 
@@ -1454,32 +1684,24 @@
         const partialRatio = isCoursePartiallyBuilt ? (currentBuiltCourses - course) : 1.0;
         const builtCols = Math.ceil(partialRatio * brickCols);
 
-        // Render each brick within the course
         for (let col = 0; col < builtCols; col++) {
           const brickX = startX + col * brickW;
-          
-          // Brick body (Act 1 dark concrete palette)
           rbCtx.fillStyle = '#141923';
           rbCtx.fillRect(brickX + 1, courseY + 1, brickW - 2, brickH - 2);
-
-          // Mortar / joint outline (Cool grey-blue)
           rbCtx.strokeStyle = '#273347';
           rbCtx.lineWidth = 1;
           rbCtx.strokeRect(brickX + 1, courseY + 1, brickW - 2, brickH - 2);
         }
 
-        // When a floor is completed, install structural floor slab and windows
         if (rowInFloor === brickRowsPerFloor - 1 && course < currentBuiltCourses) {
           const floorTopY = groundY - (floorIndex + 1) * fHeight;
 
-          // Reinforced floor slab beam
           rbCtx.fillStyle = '#1a2233';
           rbCtx.fillRect(startX, floorTopY, bWidth, 3);
           rbCtx.strokeStyle = '#3a4a68';
           rbCtx.lineWidth = 1;
           rbCtx.strokeRect(startX, floorTopY, bWidth, 3);
 
-          // Window openings (Cool grey-blue matching Act 1)
           const winAlpha = Math.min(0.7, 0.25 + (progress / 100) * 0.45);
           rbCtx.fillStyle = `rgba(74, 114, 158, ${winAlpha})`;
           const winCount = 3;
@@ -1495,14 +1717,12 @@
             rbCtx.lineWidth = 1;
             rbCtx.strokeRect(wx, wy, winW, winH);
 
-            // Window mullion
             rbCtx.beginPath();
             rbCtx.moveTo(wx + winW / 2, wy);
             rbCtx.lineTo(wx + winW / 2, wy + winH);
             rbCtx.stroke();
           }
 
-          // If fully restored (100%), draw delicate Kintsugi gold seam on slabs
           if (progress >= 98) {
             rbCtx.strokeStyle = '#d4af37';
             rbCtx.shadowColor = '#d4af37';
@@ -1517,7 +1737,6 @@
         }
       }
 
-      // Construction guide line at active building height
       if (progress > 0 && progress < 100) {
         const activeY = groundY - currentBuiltCourses * brickH;
         rbCtx.strokeStyle = 'rgba(74, 114, 158, 0.4)';
@@ -1531,7 +1750,6 @@
       }
     }
 
-    // High-Contrast Solid Pictogram Silhouette with Carved Heart Void
     function renderSolidFigurePictogram() {
       fCtx.clearRect(0, 0, fW, fH);
 
@@ -1540,29 +1758,24 @@
 
       fCtx.save();
 
-      // Subtle ambient back-glow behind figure to ensure clean detachment from black background
       const ambientGlow = fCtx.createRadialGradient(centerX, centerY - 20, 10, centerX, centerY - 20, 140);
-      ambientGlow.addColorStop(0, 'rgba(230, 57, 70, 0.12)');
+      ambientGlow.addColorStop(0, 'rgba(230, 57, 70, 0.14)');
       ambientGlow.addColorStop(1, 'rgba(0, 0, 0, 0)');
       fCtx.fillStyle = ambientGlow;
       fCtx.fillRect(0, 0, fW, fH);
 
-      // High-contrast solid humanoid pictogram (Crisp opaque slate #dbe4ee)
       fCtx.fillStyle = '#dbe4ee';
       fCtx.shadowColor = 'rgba(0, 0, 0, 0.6)';
       fCtx.shadowBlur = 12;
 
-      // 1. Head (Solid circle)
       fCtx.beginPath();
       fCtx.arc(centerX, centerY - 96, 26, 0, Math.PI * 2);
       fCtx.fill();
 
-      // 2. Torso (Solid rounded block)
       fCtx.beginPath();
       fCtx.roundRect(centerX - 42, centerY - 62, 84, 94, 16);
       fCtx.fill();
 
-      // 3. Legs (Solid rounded pillars)
       fCtx.beginPath();
       fCtx.roundRect(centerX - 36, centerY + 36, 28, 80, 10);
       fCtx.roundRect(centerX + 8, centerY + 36, 28, 80, 10);
@@ -1570,12 +1783,11 @@
 
       fCtx.shadowBlur = 0;
 
-      // 4. Carve out the Hollow Heart Void (destination-out to physically punch through the solid chest)
       fCtx.globalCompositeOperation = 'destination-out';
       fCtx.beginPath();
       const hx = centerX;
       const hy = centerY - 18;
-      const s = 1.35; // Heart scale
+      const s = 1.35;
 
       fCtx.moveTo(hx, hy + 9 * s);
       fCtx.bezierCurveTo(hx, hy - 5 * s, hx - 22 * s, hy - 20 * s, hx - 22 * s, hy - 5 * s);
@@ -1584,17 +1796,14 @@
       fCtx.bezierCurveTo(hx + 22 * s, hy - 20 * s, hx, hy - 5 * s, hx, hy + 9 * s);
       fCtx.fill();
 
-      // 5. Switch back to normal drawing for the living wound fractures
       fCtx.globalCompositeOperation = 'source-over';
 
-      // Crisp glowing red outline around the hollow heart rim
       fCtx.strokeStyle = '#e63946';
       fCtx.lineWidth = 2.5;
       fCtx.shadowColor = '#e63946';
       fCtx.shadowBlur = 12;
       fCtx.stroke();
 
-      // Persistent, animated internal fracture lines radiating across the void
       const pulse = Math.sin(Date.now() * 0.005) * 5;
       fCtx.lineWidth = 2;
       fCtx.beginPath();
@@ -1603,7 +1812,6 @@
       fCtx.lineTo(hx - 6, hy + 24);
       fCtx.stroke();
 
-      // Branching fissures piercing outward into the body
       fCtx.lineWidth = 1.4;
       fCtx.beginPath();
       fCtx.moveTo(hx + 10, hy + 12);
@@ -1627,20 +1835,22 @@
 
     repairSlider.addEventListener('input', function() {
       const val = parseInt(this.value, 10);
-      sliderValue.innerText = `${val}% (${val === 100 ? 'Fully Restored (Kintsugi)' : (val > 40 ? 'Masonry Infill' : 'Wartime Ruins')})`;
+      const stageLabel = val === 100 ? 'Visual Schematic: Facade Rebuilt (Kintsugi)' : (val > 40 ? 'Visual Schematic: Partial Masonry' : 'Visual Schematic: Ruins');
+      sliderValue.innerText = `Stage ${val}% (${stageLabel})`;
+      this.setAttribute('aria-valuetext', `Stage ${val} percent: ${stageLabel}`);
 
       if (val < 40) {
-        physicalStatus.innerText = "CRITICAL DESTABILIZATION";
-        physicalStatus.className = "text-scar text-[11px] font-mono";
+        physicalStatus.innerText = "STAGE: UNREPAIRED RUBBLE";
+        physicalStatus.className = "text-scar text-xs font-mono";
       } else if (val < 95) {
-        physicalStatus.innerText = "STRUCTURAL INFILL IN PROGRESS";
-        physicalStatus.className = "text-amber-400 text-[11px] font-mono";
+        physicalStatus.innerText = "STAGE: MASONRY RECONSTRUCTION";
+        physicalStatus.className = "text-amber-400 text-xs font-mono";
       } else {
-        physicalStatus.innerText = "100% RESTORED (KINTSUGI SEAMS)";
-        physicalStatus.className = "text-kintsugi text-[11px] font-mono";
+        physicalStatus.innerText = "STAGE: FACADE REBUILT (KINTSUGI)";
+        physicalStatus.className = "text-kintsugi text-xs font-mono";
       }
 
-      mentalStatus.innerText = "PERSISTENT INTERNAL SCARS";
+      mentalStatus.innerText = "LONG-TERM EMOTIONAL IMPRINT";
     });
   </script>
 </body>
